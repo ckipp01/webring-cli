@@ -2,7 +2,7 @@
 
 > A voice echoes in the hallway...
 
-The hallway is a small WIP bashscript to interact with the [xxiivv webring hallway](https://webring.xxiivv.com/hallway.html) if you don't want to use the [twtxt](https://twtxt.readthedocs.io/en/stable/index.html) client, but still want to interact with the hallway.
+The hallway is a small WIP bash script to interact with the [xxiivv webring hallway](https://webring.xxiivv.com/hallway.html) if you don't want to use the [twtxt](https://twtxt.readthedocs.io/en/stable/index.html) client, but still want to interact with the hallway.
 
 ## Installation
 
@@ -44,7 +44,7 @@ To then write on the wall use the following format
 hallway write "Here is an example for @ckipp to show how this works"
 ```
 
-The mention in this message will be transformed to twtxt format of @<ckipp https://chronica.xyz/hallway.txt>;
+The mention in this message will be transformed to twtxt format of `@<ckipp https://chronica.xyz/hallway.txt>;`
 
 ### TODO
 
