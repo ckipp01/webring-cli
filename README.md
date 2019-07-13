@@ -46,6 +46,8 @@ hallway write "Here is an example for @ckipp to show how this works"
 
 The mention in this message will be transformed to twtxt format of `@<ckipp https://chronica.xyz/hallway.txt>;`
 
+After writing a message, you'll then be asked whether you'd like to publish the file. I currently have this set up so that it pushes my repo to github which triggers by build. You can change this to whatever your publish method is.
+
 ### TODO
 
 - [ ] Impliment a list of channels
