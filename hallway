@@ -60,8 +60,14 @@ write_on_wall()
   fi
 
   AUTHOR=$(grep -o '@\w*' <<< $@)
-  FEED=$(grep -A1 $AUTHOR $HALLWAY_MEMBERS)
-  MSG=${@/$AUTHOR/@<${FEED:1}>;}
+
+  if [ $AUTHOR ]; then
+    echo $AUTHOR
+    FEED=$(grep -A1 $AUTHOR $HALLWAY_MEMBERS)
+    MSG=${@/$AUTHOR/@<${FEED:1}>;}
+  else
+    MSG=$@
+  fi
 
   echo -e $DATE'\t'$MSG | cat - $HALLWAY_LOCATION > /tmp/out && mv /tmp/out $HALLWAY_LOCATION
 
