@@ -1,7 +1,7 @@
 {
   "name": "webring-cli",
   "description": "Command line client for the XXIIVV webring",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "webring.js",
   "preferGlobal": true,
   "bin": {
@@ -9,6 +9,7 @@
   },
   "author": "Chris Kipp",
   "dependencies": {
+    "cli-table3": "^0.5.1",
     "commander": "^2.20.0",
     "node-fetch": "^2.6.0"
   },
