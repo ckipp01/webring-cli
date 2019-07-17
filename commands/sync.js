@@ -27,7 +27,7 @@ const fetchSites = siteListLoc => {
           .map(cleanLine)
 
         fs.writeFileSync(siteListLoc, JSON.stringify(siteObjects))
-        console.info(`Synced ${Object.keys(siteObjects).length} sites`)
+        console.log(`Synced ${Object.keys(siteObjects).length} sites`)
         resolve()
       })
       .catch(err => { reject(err) })
@@ -120,7 +120,7 @@ const fetchHallway = (siteListLoc, feedCacheLoc) => {
         .then(merged => merged.sort((a, b) => a.offset - b.offset))
         .then(finalizedFeeds => {
           fs.writeFileSync(feedCacheLoc, JSON.stringify(finalizedFeeds))
-          console.info(`Synced ${finalizedFeeds.length} hallway feed entries`)
+          console.log(`Synced ${finalizedFeeds.length} hallway feed entries`)
           resolve()
         })
     } catch (err) {

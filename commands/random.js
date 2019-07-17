@@ -14,7 +14,7 @@ const goToRandom = sitesLocation => {
 
   const randomSite = siteObjects[Math.floor((Math.random() * siteObjects.length))]
 
-  console.info(`Navigating to ${randomSite.url}`)
+  console.log(`Navigating to ${randomSite.url}`)
 
   if (platform === 'linux') {
     exec(`xdg-open ${randomSite.url}`)
@@ -23,7 +23,7 @@ const goToRandom = sitesLocation => {
   } else if (platform === 'win32') {
     exec(`explorer ${randomSite.url}`)
   } else {
-    console.info(`Sorry, I don't support ${platform} yet.`)
+    console.log(`Sorry, I don't support ${platform} yet.`)
   }
 }
 

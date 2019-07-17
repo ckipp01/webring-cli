@@ -47,7 +47,7 @@ program
 program
   .command('hallway')
   .description('a voice echoes in the hallway')
-  .option('gander', 'take a gander at the hallway')
+  .option('gander <user | channel | tag>', 'take a gander at the hallway')
   .option('write <message>', 'write a message on the wall')
   .option('setup', 'setup location of twtxt file')
   .action((options, message) => enterHallway(feedCacheLoc, configFileLoc, options, message))

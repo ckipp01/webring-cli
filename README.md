@@ -46,7 +46,7 @@ You'll then be able to use the other commands.
   a voice echoes in the hallway
 
   Options:
-    gander                         take a gander at the hallway
+    gander <user | channel | tag>  take a gander at the hallway
     write <message>                write a message on the wall
     setup                          setup location of twtxt file
     -h, --help                     output usage information
