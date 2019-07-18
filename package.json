@@ -1,13 +1,19 @@
 {
   "name": "webring-cli",
   "description": "Command line client for the XXIIVV webring",
+  "license": "MIT",
   "version": "0.3.0",
+  "author": "Chris Kipp",
+  "emai": "ckipp@pm.me",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/ckipp01/webring-cli"
+  },
   "main": "webring.js",
   "preferGlobal": true,
   "bin": {
     "webring": "webring.js"
   },
-  "author": "Chris Kipp",
   "dependencies": {
     "cli-table3": "^0.5.1",
     "commander": "^2.20.0",

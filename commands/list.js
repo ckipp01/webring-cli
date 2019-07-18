@@ -18,7 +18,7 @@ const groupGroupByTwo = (group, next) => {
 
 const listSites = siteList => {
   if (!fs.existsSync(siteList)) {
-    console.error('Please run webring sync irst')
+    console.error('Please run webring sync first')
     process.exit(1)
   }
 

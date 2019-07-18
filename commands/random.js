@@ -14,10 +14,15 @@ const goToRandom = sitesLocation => {
 
   const randomSite = siteObjects[Math.floor((Math.random() * siteObjects.length))]
 
-  console.log(`Navigating to ${randomSite.url}`)
+  console.log(`Attempting to Navigate to ${randomSite.url}`)
 
-  if (platform === 'linux') {
-    exec(`xdg-open ${randomSite.url}`)
+  if (platform === 'linux' || platform === 'freebsd' || platform === 'openbsd') {
+    exec(`xdg-open ${randomSite.url}`, error => {
+      if (error) {
+        console.error(`Unable to execute xdg-open. If you're not running X this command won't work`)
+        process.exit(1)
+      }
+    })
   } else if (platform === 'darwin') {
     exec(`open ${randomSite.url}`)
   } else if (platform === 'win32') {
