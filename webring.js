@@ -6,6 +6,7 @@ const homedir = require('os').homedir()
 const path = require('path')
 const program = require('commander')
 
+const { dim, red } = require('./utils/general')
 const { enterHallway } = require('./commands/hallway')
 const { syncWebring } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
@@ -19,7 +20,10 @@ const configFileLoc = path.join(webringBase, 'config.json')
 
 if (!fs.existsSync(webringBase)) {
   fs.mkdir(webringBase, err => {
-    if (err) throw err
+    if (err) {
+      console.error(red, err.message)
+      process.exit(1)
+    }
   })
 }
 
@@ -53,3 +57,7 @@ program
   .action((options, message) => enterHallway(feedCacheLoc, configFileLoc, options, message))
 
 program.parse(process.argv)
+
+if (program.args.length === 0) {
+  console.info(dim, '\nThis webring is an attempt to inspire artists & developers to create and maintain their own website and share traffic among each other.')
+}

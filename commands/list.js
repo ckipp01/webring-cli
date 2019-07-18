@@ -3,6 +3,8 @@
 const fs = require('fs')
 const Table = require('cli-table3')
 
+const { red } = require('../utils/general')
+
 const groupGroupByTwo = (group, next) => {
   if (group.length === 0) {
     group.push([next])
@@ -18,11 +20,14 @@ const groupGroupByTwo = (group, next) => {
 
 const listSites = siteList => {
   if (!fs.existsSync(siteList)) {
-    console.error('Please run webring sync first')
+    console.error(red, 'Please run webring sync first')
     process.exit(1)
   }
 
   const table = new Table({
+    style: {
+      head: ['grey']
+    },
     head: ['webring sites', '']
   })
 
@@ -37,11 +42,14 @@ const listSites = siteList => {
 
 const listRss = siteList => {
   if (!fs.existsSync(siteList)) {
-    console.error('Please run webring sync first')
-    process.exit(1)
+    console.error(red, 'Please run webring sync first')
+    process.exit()
   }
 
   const table = new Table({
+    style: {
+      head: ['grey']
+    },
     head: ['rss feeds', '']
   })
 

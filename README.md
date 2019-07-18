@@ -1,10 +1,12 @@
 # webring-cli
+![npm (tag)](https://img.shields.io/npm/v/webring-cli/latest.svg?color=lightgrey)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-lightgrey.svg)](https://standardjs.com)
 
 The webring-cli is a cli client for the [xxiivv webring](https://webring.xxiivv.com).
 
 ## Installation
 
-```sh
+```
 yarn global add webring-cli
 ---
 npm install -g webring-cli
@@ -12,7 +14,7 @@ npm install -g webring-cli
 
 ## Usage
 
-```sh
+```
 ❯ webring -h
   Usage: webring [options] [command]
 
@@ -31,6 +33,7 @@ npm install -g webring-cli
 The first command you'll want to run is `webring sync`.
 This will pull down the latest sites.js file from the webring, parse it, and store it in `~/.webring`
 You'll then be able to use the other commands.
+It's probably a good idea to run `webring sync` often to ensure you're always getting the latest webring sites and hallway feeds.
 
 
 ### The hallway
@@ -39,7 +42,7 @@ You'll then be able to use the other commands.
 
 ### Hallway usage
 
-```sh
+```
 ❯ webring hallway -h
   Usage: hallway [options]
 

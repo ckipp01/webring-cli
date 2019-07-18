@@ -3,6 +3,8 @@
 const fetch = require('node-fetch')
 const fs = require('fs')
 
+const { dim, red } = require('../utils/general')
+
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
   const cleanJSON = dirtyString
@@ -27,7 +29,7 @@ const fetchSites = siteListLoc => {
           .map(cleanLine)
 
         fs.writeFileSync(siteListLoc, JSON.stringify(siteObjects))
-        console.log(`Synced ${Object.keys(siteObjects).length} sites`)
+        console.log(dim, `Synced ${Object.keys(siteObjects).length} sites`)
         resolve()
       })
       .catch(err => { reject(err) })
@@ -85,7 +87,7 @@ const fetchFeed = site => {
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
     .catch(err => {
-      console.error(err)
+      console.error(red, err)
     })
 }
 
@@ -103,8 +105,8 @@ const simplifyPosts = allPosts => {
 const fetchHallway = (siteListLoc, feedCacheLoc) => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(siteListLoc)) {
-      console.error('Please run webring fetch first')
-      process.exit(1)
+      console.error(red, 'Please run webring fetch first')
+      process.exit()
     }
 
     try {
@@ -120,7 +122,7 @@ const fetchHallway = (siteListLoc, feedCacheLoc) => {
         .then(merged => merged.sort((a, b) => a.offset - b.offset))
         .then(finalizedFeeds => {
           fs.writeFileSync(feedCacheLoc, JSON.stringify(finalizedFeeds))
-          console.log(`Synced ${finalizedFeeds.length} hallway feed entries`)
+          console.log(dim, `Synced ${finalizedFeeds.length} hallway feed entries`)
           resolve()
         })
     } catch (err) {
@@ -134,7 +136,7 @@ const syncWebring = async (siteListLoc, feedCacheLoc) => {
     await fetchSites(siteListLoc)
     await fetchHallway(siteListLoc, feedCacheLoc)
   } catch (err) {
-    console.error(err.message)
+    console.error(red, err.message)
   }
 }
 
