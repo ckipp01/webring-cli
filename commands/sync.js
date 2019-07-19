@@ -32,7 +32,9 @@ const fetchSites = siteListLoc => {
         console.log(dim, `Synced ${Object.keys(siteObjects).length} sites`)
         resolve()
       })
-      .catch(err => { reject(err) })
+      .catch(err => {
+        reject(new Error(`Unable to fetch and parse sites.js -> ${err.message}`))
+      })
   })
 }
 
@@ -70,7 +72,7 @@ const parseFeed = (author, feed) => {
   const entries = []
   for (const id in lines) {
     const line = lines[id].trim()
-    if (line === '') { continue }
+    if (line === '' || line.charAt(0) === '#') { continue }
     const parts = line.replace('   ', '\t').split('\t')
     const date = parts[0].trim()
     const body = parts[1].trim()
@@ -126,7 +128,7 @@ const fetchHallway = (siteListLoc, feedCacheLoc) => {
           resolve()
         })
     } catch (err) {
-      reject(err)
+      reject(new Error(`Unable to fetch and sync hallway feeds -> ${err.message}`))
     }
   })
 }
