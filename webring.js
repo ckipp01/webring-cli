@@ -36,7 +36,14 @@ program
 program
   .command('sites')
   .description('lists all the sites in the webring')
-  .action(() => listSites(siteListLoc))
+  .action(() => {
+    try {
+      const sitesTable = listSites(siteListLoc)
+      console.log(sitesTable.toString())
+    } catch (err) {
+      console.error(red, err.message)
+    }
+  })
 
 program
   .command('random')
@@ -46,7 +53,14 @@ program
 program
   .command('rss')
   .description('shows you a list of all available rss feeds in the webring')
-  .action(() => listRss(siteListLoc))
+  .action(() => {
+    try {
+      const rssTable = listRss(siteListLoc)
+      console.log(rssTable.toString())
+    } catch (err) {
+      console.error(red, err.message)
+    }
+  })
 
 program
   .command('hallway')

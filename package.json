@@ -14,12 +14,16 @@
   "bin": {
     "webring": "webring.js"
   },
+  "scripts": {
+    "test": "standard && ava --verbose"
+  },
   "dependencies": {
     "cli-table3": "^0.5.1",
     "commander": "^2.20.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "ava": "^2.2.0",
     "standard": "^13.0.2"
   }
 }

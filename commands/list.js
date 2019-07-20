@@ -3,7 +3,7 @@
 const fs = require('fs')
 const Table = require('cli-table3')
 
-const { red } = require('../utils/general')
+const { checkIfExists } = require('../utils/general')
 
 const groupGroupByTwo = (group, next) => {
   if (group.length === 0) {
@@ -18,11 +18,8 @@ const groupGroupByTwo = (group, next) => {
   return group
 }
 
-const listSites = siteList => {
-  if (!fs.existsSync(siteList)) {
-    console.error(red, 'Please run webring sync first')
-    process.exit(1)
-  }
+const listSites = siteListLoc => {
+  checkIfExists(siteListLoc, 'Please run webring sync first')
 
   const table = new Table({
     style: {
@@ -31,20 +28,17 @@ const listSites = siteList => {
     head: ['webring sites', '']
   })
 
-  const rawJson = fs.readFileSync(siteList)
+  const rawJson = fs.readFileSync(siteListLoc)
   const siteObjects = JSON.parse(rawJson)
   const urls = siteObjects.map(site => site.url)
   const grouped = urls.reduce(groupGroupByTwo, [])
   grouped.forEach(group => { table.push(group) })
 
-  console.log(table.toString())
+  return table
 }
 
-const listRss = siteList => {
-  if (!fs.existsSync(siteList)) {
-    console.error(red, 'Please run webring sync first')
-    process.exit()
-  }
+const listRss = siteListLoc => {
+  checkIfExists(siteListLoc, 'Please run webring sync first')
 
   const table = new Table({
     style: {
@@ -53,7 +47,7 @@ const listRss = siteList => {
     head: ['rss feeds', '']
   })
 
-  const rawJson = fs.readFileSync(siteList)
+  const rawJson = fs.readFileSync(siteListLoc)
   const siteObjects = JSON.parse(rawJson)
   const sitesFeeds = siteObjects
     .filter(site => site.rss)
@@ -62,7 +56,7 @@ const listRss = siteList => {
   const grouped = sitesFeeds.reduce(groupGroupByTwo, [])
   grouped.forEach(group => { table.push(group) })
 
-  console.log(table.toString())
+  return table
 }
 
 module.exports = { listSites, listRss }
