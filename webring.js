@@ -30,7 +30,7 @@ if (!fs.existsSync(webringBase)) {
 }
 
 program
-  .version(wcli.version)
+  .version(wcli.version, '-v, --version')
   .command('sync')
   .description('syncs latest sites.js file from the xxiivv webring and the hallway feeds')
   .action(async () => {
@@ -40,7 +40,7 @@ program
       const feedsSuccess = await fetchHallway(siteListLoc, feedCacheLoc)
       console.log(dim, feedsSuccess)
     } catch (err) {
-      console.error(err)
+      console.error(red, err.message)
     }
   })
 
@@ -90,5 +90,5 @@ program
 program.parse(process.argv)
 
 if (program.args.length === 0) {
-  console.info(dim, '\nThis webring is an attempt to inspire artists & developers to create and maintain their own website and share traffic among each other.')
+  console.info(dim, '\nxxiivv webring\n\nThis webring is an attempt to inspire artists & developers to create and maintain their own website and share traffic among each other.')
 }

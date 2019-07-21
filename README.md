@@ -58,3 +58,21 @@ It's probably a good idea to run `webring sync` often to ensure you're always ge
 You will be able to `webring hallway gander` right away, but if you want the ability to write to your hallway twtxt file, you'll need to run `webring hallway setup` first.
 This will ask you for the path to your twtxt file in order to write to it.
 
+## Building locally
+
+If you'd like to build locally, you're able to clone this repository and run it by following the commands below.
+There is no building process, dev server, or anything like that needed.
+
+```
+git clone https://github.com/ckipp01/webring-cli
+cd webring-cli
+yarn install
+node webring.js [options] [commands]
+```
+
+The tests for the project are run with [ava](https://github.com/avajs/ava).
+To run them, just enter the command below:
+
+```
+yarn test
+```
