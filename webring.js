@@ -8,7 +8,7 @@ const program = require('commander')
 
 const { dim, red } = require('./utils/general')
 const { enterHallway } = require('./commands/hallway')
-const { syncWebring } = require('./commands/sync')
+const { fetchHallway, fetchSites } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
 const { listSites, listRss } = require('./commands/list')
 const wcli = require('./package.json')
@@ -17,6 +17,8 @@ const webringBase = path.join(homedir, '.webring')
 const siteListLoc = path.join(webringBase, 'sites.json')
 const feedCacheLoc = path.join(webringBase, 'feed.json')
 const configFileLoc = path.join(webringBase, 'config.json')
+
+const webringSitesUrl = 'https://raw.githubusercontent.com/XXIIVV/Webring/master/scripts/sites.js'
 
 if (!fs.existsSync(webringBase)) {
   fs.mkdir(webringBase, err => {
@@ -31,7 +33,16 @@ program
   .version(wcli.version)
   .command('sync')
   .description('syncs latest sites.js file from the xxiivv webring and the hallway feeds')
-  .action(() => syncWebring(siteListLoc, feedCacheLoc))
+  .action(async () => {
+    try {
+      const sitesSucces = await fetchSites(webringSitesUrl, siteListLoc)
+      console.log(dim, sitesSucces)
+      const feedsSuccess = await fetchHallway(siteListLoc, feedCacheLoc)
+      console.log(dim, feedsSuccess)
+    } catch (err) {
+      console.error(err)
+    }
+  })
 
 program
   .command('sites')
@@ -48,7 +59,13 @@ program
 program
   .command('random')
   .description('brings you to a random site in the webring')
-  .action(() => goToRandom(siteListLoc))
+  .action(() => {
+    try {
+      goToRandom(siteListLoc)
+    } catch (err) {
+      console.error(red, err.message)
+    }
+  })
 
 program
   .command('rss')

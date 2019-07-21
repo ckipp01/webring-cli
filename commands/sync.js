@@ -3,7 +3,7 @@
 const fetch = require('node-fetch')
 const fs = require('fs')
 
-const { dim, red } = require('../utils/general')
+const { checkIfExists, red } = require('../utils/general')
 
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
@@ -14,9 +14,9 @@ const cleanLine = line => {
   return JSON.parse(cleanJSON)
 }
 
-const fetchSites = siteListLoc => {
+const fetchSites = (webringSitesUrl, siteListLoc) => {
   return new Promise((resolve, reject) => {
-    fetch('https://raw.githubusercontent.com/XXIIVV/Webring/master/scripts/sites.js')
+    fetch(webringSitesUrl)
       .then(rawResponse => rawResponse.text())
       .then(data => {
         const begin = data.indexOf('[') + 1
@@ -29,8 +29,7 @@ const fetchSites = siteListLoc => {
           .map(cleanLine)
 
         fs.writeFileSync(siteListLoc, JSON.stringify(siteObjects))
-        console.log(dim, `Synced ${Object.keys(siteObjects).length} sites`)
-        resolve()
+        resolve(`Synced ${Object.keys(siteObjects).length} sites`)
       })
       .catch(err => {
         reject(new Error(`Unable to fetch and parse sites.js -> ${err.message}`))
@@ -88,8 +87,8 @@ const fetchFeed = site => {
   return fetch(site.feed)
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
-    .catch(err => {
-      console.error(red, err)
+    .catch(_ => {
+      console.error(red, `Unable to correctly fetch ${site.author}'s feed correctly`)
     })
 }
 
@@ -106,40 +105,25 @@ const simplifyPosts = allPosts => {
 
 const fetchHallway = (siteListLoc, feedCacheLoc) => {
   return new Promise((resolve, reject) => {
-    if (!fs.existsSync(siteListLoc)) {
-      console.error(red, 'Please run webring fetch first')
-      process.exit()
-    }
+    checkIfExists(siteListLoc, 'Please run webring fetch first')
 
-    try {
-      const rawJson = fs.readFileSync(siteListLoc)
-      const siteObjects = JSON.parse(rawJson)
-      const feedObjects = siteObjects
-        .filter(site => site.feed)
-        .map(site => ({ author: site.author, feed: site.feed }))
+    const rawJson = fs.readFileSync(siteListLoc)
+    const siteObjects = JSON.parse(rawJson)
+    const feedObjects = siteObjects
+      .filter(site => site.feed)
+      .map(site => ({ author: site.author, feed: site.feed }))
 
-      Promise.all(feedObjects.map(feed => fetchFeed(feed)))
-        .then(allPosts => simplifyPosts(allPosts))
-        .then(simplified => [].concat.apply([], simplified))
-        .then(merged => merged.sort((a, b) => a.offset - b.offset))
-        .then(finalizedFeeds => {
-          fs.writeFileSync(feedCacheLoc, JSON.stringify(finalizedFeeds))
-          console.log(dim, `Synced ${finalizedFeeds.length} hallway feed entries`)
-          resolve()
-        })
-    } catch (err) {
-      reject(new Error(`Unable to fetch and sync hallway feeds -> ${err.message}`))
-    }
+    Promise.all(feedObjects.map(feed => fetchFeed(feed)))
+      .then(allPosts => allPosts.filter(post => post !== undefined))
+      .then(filteredPosts => simplifyPosts(filteredPosts))
+      .then(simplified => [].concat.apply([], simplified))
+      .then(merged => merged.sort((a, b) => a.offset - b.offset))
+      .then(finalizedFeeds => {
+        fs.writeFileSync(feedCacheLoc, JSON.stringify(finalizedFeeds))
+        resolve(`Synced ${finalizedFeeds.length} hallway feed entries`)
+      })
+      .catch(err => reject(new Error(`Unable to fetch and sync hallway feeds -> ${err.message}`)))
   })
 }
 
-const syncWebring = async (siteListLoc, feedCacheLoc) => {
-  try {
-    await fetchSites(siteListLoc)
-    await fetchHallway(siteListLoc, feedCacheLoc)
-  } catch (err) {
-    console.error(red, err.message)
-  }
-}
-
-module.exports = { syncWebring }
+module.exports = { fetchHallway, fetchSites }

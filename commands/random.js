@@ -4,13 +4,11 @@ const { exec } = require('child_process')
 const fs = require('fs')
 const platform = require('os').platform()
 
-const { dim, red } = require('../utils/general')
+const { checkIfExists, dim } = require('../utils/general')
 
 const goToRandom = sitesLocation => {
-  if (!fs.existsSync(sitesLocation)) {
-    console.error(red, 'Please run webring sync first')
-    process.exit()
-  }
+  checkIfExists(sitesLocation, 'Please run webring sync first')
+
   const rawJson = fs.readFileSync(sitesLocation)
   const siteObjects = JSON.parse(rawJson)
 
@@ -21,8 +19,7 @@ const goToRandom = sitesLocation => {
   if (platform === 'linux' || platform === 'freebsd' || platform === 'openbsd') {
     exec(`xdg-open ${randomSite.url}`, error => {
       if (error) {
-        console.error(red, `Unable to execute xdg-open. If you're not running X this command won't work`)
-        process.exit(1)
+        throw new Error(`Unable to execute xdg-open. If you're not running X this command won't work`)
       }
     })
   } else if (platform === 'darwin') {
@@ -30,7 +27,7 @@ const goToRandom = sitesLocation => {
   } else if (platform === 'win32') {
     exec(`explorer ${randomSite.url}`)
   } else {
-    console.log(dim, `Sorry, I don't support ${platform} yet.`)
+    throw new Error(`Sorry, I don't support ${platform} yet`)
   }
 }
 
