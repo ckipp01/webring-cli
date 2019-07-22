@@ -50,11 +50,12 @@ test('That the webring rss command correctly reads, and displays the rss feeds c
     style: {
       head: ['grey']
     },
-    head: ['rss feeds', '']
+    head: ['author', 'rss feed']
   })
 
   testTable.push(
-    ['https://wiki.xxiivv.com/links/rss.xml', 'https://electro.pizza/feed.xml']
+    ['neauoire', 'https://wiki.xxiivv.com/links/rss.xml'],
+    ['rho', 'https://electro.pizza/feed.xml']
   )
 
   t.deepEqual(rssTable, testTable)

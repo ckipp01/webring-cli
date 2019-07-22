@@ -44,17 +44,15 @@ const listRss = siteListLoc => {
     style: {
       head: ['grey']
     },
-    head: ['rss feeds', '']
+    head: ['author', 'rss feed']
   })
 
   const rawJson = fs.readFileSync(siteListLoc)
   const siteObjects = JSON.parse(rawJson)
   const sitesFeeds = siteObjects
     .filter(site => site.rss)
-    .map(site => site.rss)
 
-  const grouped = sitesFeeds.reduce(groupGroupByTwo, [])
-  grouped.forEach(group => { table.push(group) })
+  sitesFeeds.forEach(group => { table.push([group.author, group.rss]) })
 
   return table
 }
