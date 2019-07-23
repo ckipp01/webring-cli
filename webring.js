@@ -83,9 +83,23 @@ program
   .command('hallway')
   .description('a voice echoes in the hallway')
   .option('gander <user | channel | tag>', 'take a gander at the hallway')
-  .option('write <message>', 'write a message on the wall')
   .option('setup', 'setup location of twtxt file')
-  .action((options, message) => enterHallway(feedCacheLoc, configFileLoc, options, message))
+  .option('write <message>', 'write a message on the wall')
+  .action(async (options, message) => {
+    try {
+      const hallwayResponse = await enterHallway(feedCacheLoc, configFileLoc, options, message)
+      if (options === 'write') {
+        console.log(hallwayResponse)
+      } else if (options === 'setup') {
+        console.log(hallwayResponse)
+        process.exit()
+      } else {
+        console.log(hallwayResponse.toString())
+      }
+    } catch (err) {
+      console.error(red, err.message)
+    }
+  })
 
 program.parse(process.argv)
 
