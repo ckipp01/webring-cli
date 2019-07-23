@@ -57,7 +57,7 @@ const enterHallway = (feedCacheLoc, configFileLoc, option, subOption) => {
 
         const d = new Date().toISOString()
 
-        checkIfExists(txtLoc, `Unable to find your twtxt file at ${txtLoc}`)
+        checkIfExists(txtLoc, 'Unable to locate your twtxt file')
 
         const txt = fs.readFileSync(txtLoc, 'utf8')
         console.log(dim, `Found ${txt.split('\n').length} entries.`)

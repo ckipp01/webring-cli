@@ -94,7 +94,7 @@ test('hallway gander returns correct error when unable to find what you are filt
   try {
     await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', 'orange')
   } catch (err) {
-    t.deepEqual(err.message, 'No author, tags, or channel matches orange in the last 20 messages')
+    t.is(err.message, 'No author, tags, or channel matches orange in the last 20 messages')
   }
 })
 
@@ -102,6 +102,6 @@ test(`hallway gander returns correct error when it's unable to parse the feeds c
   try {
     await enterHallway(invalidFeedCacheLoc, validConfigFileLoc, 'gander', null)
   } catch (err) {
-    t.deepEqual(err.message, 'Unexpected token \' in JSON at position 20')
+    t.is(err.message, 'Unexpected token \' in JSON at position 20')
   }
 })
