@@ -11,7 +11,7 @@ const { enterHallway } = require('./commands/hallway')
 const { fetchHallway } = require('./commands/hallway-gander')
 const { fetchSites } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
-const { listSites, listRss } = require('./commands/list')
+const { listHallwayMembers, listSites, listRss } = require('./commands/list')
 const wcli = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
@@ -81,6 +81,7 @@ program
   .command('hallway')
   .description('a voice echoes in the hallway')
   .option('gander <user | channel | tag>', 'take a gander at the hallway')
+  .option('members', 'shows a list of all hallway members and their twtxt file location')
   .option('setup', 'setup location of twtxt file')
   .option('write <message>', 'write a message on the wall')
   .action(async (options, subOption) => {
@@ -88,13 +89,18 @@ program
       if (options === 'gander') {
         const ganderResponse = await fetchHallway(siteListLoc, subOption)
         console.log(ganderResponse.toString())
-      } else if (options === 'write') {
-        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
-        console.log(hallwayResponse)
+      } else if (options === 'members') {
+        const memberTable = listHallwayMembers(siteListLoc)
+        console.log(memberTable.toString())
       } else if (options === 'setup') {
         const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
         console.log(hallwayResponse)
         process.exit()
+      } else if (options === 'write') {
+        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
+        console.log(hallwayResponse)
+      } else {
+        console.error(red, `This isn't a valid command for the hallway`)
       }
     } catch (err) {
       console.error(red, err.message)

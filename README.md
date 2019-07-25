@@ -23,7 +23,7 @@ npm install -g webring-cli
     -h, --help         output usage information
 
   Commands:
-    sync               syncs latest sites.js file from the xxiivv webring and the hallway feeds
+    sync               syncs latest sites.js file from the xxiivv webring
     sites              lists all the sites in the webring
     random             brings you to a random site in the webring
     rss                shows you a list of all available rss feeds in the webring
@@ -33,8 +33,6 @@ npm install -g webring-cli
 The first command you'll want to run is `webring sync`.
 This will pull down the latest sites.js file from the webring, parse it, and store it in `~/.webring`
 You'll then be able to use the other commands.
-It's probably a good idea to run `webring sync` often to ensure you're always getting the latest webring sites and hallway feeds.
-
 
 ### The hallway
 
@@ -50,8 +48,9 @@ It's probably a good idea to run `webring sync` often to ensure you're always ge
 
   Options:
     gander <user | channel | tag>  take a gander at the hallway
-    write <message>                write a message on the wall
+    members                        shows a list of all hallway members and their twtxt file location
     setup                          setup location of twtxt file
+    write <message>                write a message on the wall
     -h, --help                     output usage information
 ```
 

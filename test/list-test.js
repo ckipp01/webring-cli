@@ -4,7 +4,7 @@ const path = require('path')
 const Table = require('cli-table3')
 const test = require('ava')
 
-const { listRss, listSites } = require('../commands/list')
+const { listHallwayMembers, listRss, listSites } = require('../commands/list')
 
 const validSiteLoc = path.join(__dirname, 'resources', 'valid', 'sites.json')
 const invalidSiteLoc = path.join(__dirname, 'resources', 'invalid', 'sites.json')
@@ -74,4 +74,21 @@ test(`If a syntax error exists in the file when you read it, the correct error i
   } catch (err) {
     t.deepEqual(err, new SyntaxError(`Unexpected end of JSON input`))
   }
+})
+
+test('That the webring hallway member command lists all members and their feed location correctly', t => {
+  const memberTable = listHallwayMembers(validSiteLoc)
+
+  const testTable = new Table({
+    style: {
+      head: ['grey']
+    },
+    head: ['member', 'twtxt location']
+  })
+
+  testTable.push(
+    ['ckipp', 'https://webring-cli-test.now.sh/valid-twtxt.txt']
+  )
+
+  t.deepEqual(memberTable, testTable)
 })

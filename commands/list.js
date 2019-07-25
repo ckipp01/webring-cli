@@ -57,4 +57,24 @@ const listRss = siteListLoc => {
   return table
 }
 
-module.exports = { listSites, listRss }
+const listHallwayMembers = siteListLoc => {
+  checkIfExists(siteListLoc, 'Please run webring sync first')
+
+  const table = new Table({
+    style: {
+      head: ['grey']
+    },
+    head: ['member', 'twtxt location']
+  })
+
+  const rawJson = fs.readFileSync(siteListLoc)
+  const siteObjects = JSON.parse(rawJson)
+  const sitesFeeds = siteObjects
+    .filter(site => site.feed)
+
+  sitesFeeds.forEach(group => { table.push([group.author, group.feed]) })
+
+  return table
+}
+
+module.exports = { listHallwayMembers, listSites, listRss }

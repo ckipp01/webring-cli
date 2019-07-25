@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 const Table = require('cli-table3')
 
-const { checkIfExists } = require('../utils/general')
+const { checkIfExists, red } = require('../utils/general')
 
 const timeAgo = dateParam => {
   const date = new Date(dateParam)
@@ -67,7 +67,7 @@ const fetchFeed = site => {
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
     .catch(_ => {
-      console.error(`Unable to correctly fetch ${site.author}'s feed correctly`)
+      console.error(red, `Unable to correctly fetch ${site.author}'s feed correctly`)
     })
 }
 
