@@ -4,14 +4,13 @@ const path = require('path')
 const Table = require('cli-table3')
 const test = require('ava')
 
-const { enterHallway } = require('../commands/hallway')
+const { fetchHallway, timeAgo } = require('../commands/hallway-gander')
 
-const invalidFeedCacheLoc = path.join(__dirname, 'resources', 'invalid', 'feed.json')
-const validFeedCacheLoc = path.join(__dirname, 'resources', 'valid', 'feed.json')
-const validConfigFileLoc = path.join(__dirname, 'resources', 'tmp', 'config.json')
+const validSiteListLoc = path.join(__dirname, 'resources', 'valid', 'sites.json')
+const validSiteInvalidFeedLoc = path.join(__dirname, 'resources', 'valid', 'valid-sites-invalid-feed.json')
 
 test('hallway gander with no filtering should display correct table', async t => {
-  const hallwayTable = await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', null)
+  const hallwayTable = await fetchHallway(validSiteListLoc, null)
 
   const testTable = new Table({
     style: {
@@ -23,17 +22,17 @@ test('hallway gander with no filtering should display correct table', async t =>
   })
 
   testTable.push(
-    ['amorris', '/lab  https://www.ietf.org/rfc/rfc4880.txt', '2 days ago'],
-    ['ckipp', '/meta ckipp01/webring-cli', '1 days ago'],
-    ['quite', 'wow! #twtxt lives on indeed https://webring.xxiivv.com/hallway.html', 'yesterday'],
-    ['ckipp', 'Welcome @<quite https://lublin.se/twtxt.txt>!', '6 hours ago']
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)],
+    ['ckipp', '@neauoire it\'s good to be here!', timeAgo(`2019-07-04T14:39:13+00:00`)],
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
   )
 
   t.deepEqual(hallwayTable, testTable)
 })
 
 test('hallway gander with an added filter for the user works as expected', async t => {
-  const hallwayTable = await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', 'ckipp')
+  const hallwayTable = await fetchHallway(validSiteListLoc, 'ckipp')
 
   const testTable = new Table({
     style: {
@@ -45,15 +44,17 @@ test('hallway gander with an added filter for the user works as expected', async
   })
 
   testTable.push(
-    ['ckipp', '/meta ckipp01/webring-cli', '1 days ago'],
-    ['ckipp', 'Welcome @<quite https://lublin.se/twtxt.txt>!', '6 hours ago']
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)],
+    ['ckipp', '@neauoire it\'s good to be here!', timeAgo(`2019-07-04T14:39:13+00:00`)],
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
   )
 
   t.deepEqual(hallwayTable, testTable)
 })
 
 test('hallway gander with an added filter for the channel works as expected', async t => {
-  const hallwayTable = await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', 'meta')
+  const hallwayTable = await fetchHallway(validSiteListLoc, 'meta')
 
   const testTable = new Table({
     style: {
@@ -65,14 +66,15 @@ test('hallway gander with an added filter for the channel works as expected', as
   })
 
   testTable.push(
-    ['ckipp', '/meta ckipp01/webring-cli', '1 days ago']
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
   )
 
   t.deepEqual(hallwayTable, testTable)
 })
 
 test('hallway gander with an added filter on tag works as expected', async t => {
-  const hallwayTable = await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', 'twtxt')
+  const hallwayTable = await fetchHallway(validSiteListLoc, 'twtxt')
 
   const testTable = new Table({
     style: {
@@ -84,7 +86,7 @@ test('hallway gander with an added filter on tag works as expected', async t => 
   })
 
   testTable.push(
-    ['quite', 'wow! #twtxt lives on indeed https://webring.xxiivv.com/hallway.html', 'yesterday']
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)]
   )
 
   t.deepEqual(hallwayTable, testTable)
@@ -92,16 +94,16 @@ test('hallway gander with an added filter on tag works as expected', async t => 
 
 test('hallway gander returns correct error when unable to find what you are filtering on', async t => {
   try {
-    await enterHallway(validFeedCacheLoc, validConfigFileLoc, 'gander', 'orange')
+    await fetchHallway(validSiteListLoc, 'orange')
   } catch (err) {
     t.is(err.message, 'No author, tags, or channel matches orange in the last 20 messages')
   }
 })
 
-test(`hallway gander returns correct error when it's unable to parse the feeds correct`, async t => {
+test(`hallway gander returns correct error when it's unable to parse the feeds correctly`, async t => {
   try {
-    await enterHallway(invalidFeedCacheLoc, validConfigFileLoc, 'gander', null)
+    await fetchHallway(validSiteInvalidFeedLoc, null)
   } catch (err) {
-    t.is(err.message, 'Unexpected token \' in JSON at position 20')
+    t.is(err.message, 'No author, tags, or channel matches null in the last 20 messages')
   }
 })

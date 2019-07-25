@@ -21,7 +21,7 @@ test('That the the webring sites command correctly reads and displays all the si
 
   testTable.push(
     ['https://wiki.xxiivv.com', 'http://estevancarlos.com'],
-    ['https://electro.pizza']
+    ['https://fake.com']
   )
 
   t.deepEqual(sitesTable, testTable)
@@ -54,8 +54,7 @@ test('That the webring rss command correctly reads, and displays the rss feeds c
   })
 
   testTable.push(
-    ['neauoire', 'https://wiki.xxiivv.com/links/rss.xml'],
-    ['rho', 'https://electro.pizza/feed.xml']
+    ['neauoire', 'https://wiki.xxiivv.com/links/rss.xml']
   )
 
   t.deepEqual(rssTable, testTable)

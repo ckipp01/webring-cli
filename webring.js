@@ -8,14 +8,14 @@ const program = require('commander')
 
 const { dim, red } = require('./utils/general')
 const { enterHallway } = require('./commands/hallway')
-const { fetchHallway, fetchSites } = require('./commands/sync')
+const { fetchHallway } = require('./commands/hallway-gander')
+const { fetchSites } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
 const { listSites, listRss } = require('./commands/list')
 const wcli = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
 const siteListLoc = path.join(webringBase, 'sites.json')
-const feedCacheLoc = path.join(webringBase, 'feed.json')
 const configFileLoc = path.join(webringBase, 'config.json')
 
 const webringSitesUrl = 'https://raw.githubusercontent.com/XXIIVV/Webring/master/scripts/sites.js'
@@ -37,8 +37,6 @@ program
     try {
       const sitesSucces = await fetchSites(webringSitesUrl, siteListLoc)
       console.log(dim, sitesSucces)
-      const feedsSuccess = await fetchHallway(siteListLoc, feedCacheLoc)
-      console.log(dim, feedsSuccess)
     } catch (err) {
       console.error(red, err.message)
     }
@@ -85,16 +83,18 @@ program
   .option('gander <user | channel | tag>', 'take a gander at the hallway')
   .option('setup', 'setup location of twtxt file')
   .option('write <message>', 'write a message on the wall')
-  .action(async (options, message) => {
+  .action(async (options, subOption) => {
     try {
-      const hallwayResponse = await enterHallway(feedCacheLoc, configFileLoc, options, message)
-      if (options === 'write') {
+      if (options === 'gander') {
+        const ganderResponse = await fetchHallway(siteListLoc, subOption)
+        console.log(ganderResponse.toString())
+      } else if (options === 'write') {
+        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
         console.log(hallwayResponse)
       } else if (options === 'setup') {
+        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
         console.log(hallwayResponse)
         process.exit()
-      } else {
-        console.log(hallwayResponse.toString())
       }
     } catch (err) {
       console.error(red, err.message)

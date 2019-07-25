@@ -1,51 +1,11 @@
 'use strict'
 
 const fs = require('fs')
-const Table = require('cli-table3')
 
 const { checkIfExists, dim } = require('../utils/general')
 
-const enterHallway = (feedCacheLoc, configFileLoc, option, subOption) => {
+const enterHallway = (configFileLoc, option, subOption) => {
   return new Promise((resolve, reject) => {
-    checkIfExists(feedCacheLoc, 'Please run webring sync first')
-
-    if (option === 'gander') {
-      const rawJson = fs.readFileSync(feedCacheLoc)
-      const wallPosts = JSON.parse(rawJson)
-
-      const latest = wallPosts.slice(0, 20).reverse()
-
-      const table = new Table({
-        style: {
-          head: ['grey']
-        },
-        head: ['author', 'post', 'date'],
-        colWidths: [15, 60, 15],
-        wordWrap: true
-      })
-
-      const filter = typeof subOption === 'string'
-        ? subOption
-        : null
-
-      latest.forEach(post => {
-        if (filter) {
-          if (post.author === filter || post.body.search('#' + filter) !== -1 || post.body.startsWith('/' + filter)) {
-            table.push([post.author, post.body, post.date])
-          }
-        } else {
-          table.push([post.author, post.body, post.date])
-        }
-      })
-
-      if (table[0] === undefined) {
-        reject(new Error(`No author, tags, or channel matches ${subOption} in the last 20 messages`))
-      } else {
-        resolve(table)
-      }
-    }
-
-    // TODO break these out into seperate functions
     if (option === 'write') {
       checkIfExists(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
       if (typeof subOption !== 'string') {

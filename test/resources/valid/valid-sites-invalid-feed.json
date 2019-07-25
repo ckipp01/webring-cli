@@ -1,0 +1,9 @@
+[
+  {
+    "url": "https://fake.com",
+    "title": "fake",
+    "type": "blog",
+    "author": "ckipp",
+    "feed": "https://webring-cli-test.now.sh/invalid-twtxt.txt"
+  }
+]

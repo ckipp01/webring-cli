@@ -1,1 +1,20 @@
-[{"url":"https://wiki.xxiivv.com","title":"xxiivv","type":"wiki","author":"neauoire","contact":"aliceffekt@gmail.com","rss":"https://wiki.xxiivv.com/links/rss.xml","feed":"https://wiki.xxiivv.com/twtxt.txt"},{"url":"http://estevancarlos.com"},{"url":"https://electro.pizza","title":"electropizza","type":"blog","author":"rho","rss":"https://electro.pizza/feed.xml","feed":"https://electro.pizza/twtxt.txt"}]
+[
+  {
+    "url": "https://wiki.xxiivv.com",
+    "title": "xxiivv",
+    "type": "wiki",
+    "author": "neauoire",
+    "contact": "aliceffekt@gmail.com",
+    "rss": "https://wiki.xxiivv.com/links/rss.xml"
+  },
+  {
+    "url": "http://estevancarlos.com"
+  },
+  {
+    "url": "https://fake.com",
+    "title": "fake",
+    "type": "blog",
+    "author": "ckipp",
+    "feed": "https://webring-cli-test.now.sh/valid-twtxt.txt"
+  }
+]
