@@ -119,5 +119,10 @@ program
 program.parse(process.argv)
 
 if (program.args.length === 0) {
-  console.info(dim, '\nxxiivv webring\n\nThis webring is an attempt to inspire artists & developers to create and maintain their own website and share traffic among each other')
+  console.info(dim, `
+  xxiivv webring
+
+  This webring is an attempt to inspire artists & developers to create
+  and maintain their own website and share traffic among each other`
+  )
 }
