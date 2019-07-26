@@ -6,9 +6,12 @@ The webring-cli is a cli client for the [xxiivv webring](https://webring.xxiivv.
 
 ## Installation
 
+Simply run...
 ```
 yarn global add webring-cli
----
+```
+...or
+```
 npm install -g webring-cli
 ```
 
@@ -56,6 +59,10 @@ You'll then be able to use the other commands.
 
 You will be able to `webring hallway gander` right away, but if you want the ability to write to your hallway twtxt file, you'll need to run `webring hallway setup` first.
 This will ask you for the path to your twtxt file in order to write to it.
+
+
+When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
+If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.
 
 ## Building locally
 
