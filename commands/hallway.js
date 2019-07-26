@@ -26,9 +26,9 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) => {
 
       const mentionHandledMessage = splitMessage.map(word => {
         if (word.startsWith('@')) {
-          const target = sites.find(u => u.author === word.substring(1))
+          const target = sites.find(u => word.substring(1).includes(u.author))
           return target
-            ? `@<${target.author} ${target.feed}>`
+            ? word.replace(`@${target.author}`, `@<${target.author} ${target.feed}>`)
             : word
         } else {
           return word
