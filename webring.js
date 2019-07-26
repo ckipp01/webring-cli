@@ -7,7 +7,7 @@ const path = require('path')
 const program = require('commander')
 
 const { dim, red } = require('./utils/general')
-const { enterHallway } = require('./commands/hallway')
+const { hallwaySetup, writeInHallway } = require('./commands/hallway')
 const { fetchHallway } = require('./commands/hallway-gander')
 const { fetchSites, getMostRecent } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
@@ -102,11 +102,11 @@ program
         const memberTable = listHallwayMembers(siteListLoc)
         console.log(memberTable.toString())
       } else if (options === 'setup') {
-        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
+        const hallwayResponse = await hallwaySetup(configFileLoc)
         console.log(hallwayResponse)
         process.exit()
       } else if (options === 'write') {
-        const hallwayResponse = await enterHallway(configFileLoc, options, subOption)
+        const hallwayResponse = await writeInHallway(configFileLoc, siteListLoc, subOption)
         console.log(hallwayResponse)
       } else {
         console.error(red, `This isn't a valid command for the hallway`)

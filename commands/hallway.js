@@ -4,45 +4,64 @@ const fs = require('fs')
 
 const { checkIfExists, dim } = require('../utils/general')
 
-const enterHallway = (configFileLoc, option, subOption) => {
+const writeInHallway = (configFileLoc, siteListLoc, subOption) => {
   return new Promise((resolve, reject) => {
-    if (option === 'write') {
-      checkIfExists(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
-      if (typeof subOption !== 'string') {
-        reject(new Error(`Your message can't be empty`))
-      } else {
-        const rawJson = fs.readFileSync(configFileLoc)
-        const config = JSON.parse(rawJson)
-        const txtLoc = config.hallwayFileLocation
+    checkIfExists(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
+    checkIfExists(siteListLoc, 'You need to run webring sync before writing in the hallway')
+    if (typeof subOption !== 'string') {
+      reject(new Error(`Your message can't be empty`))
+    } else {
+      const rawConfig = fs.readFileSync(configFileLoc)
+      const config = JSON.parse(rawConfig)
+      const txtLoc = config.hallwayFileLocation
 
-        const d = new Date().toISOString()
+      checkIfExists(txtLoc, 'Unable to locate your twtxt file')
 
-        checkIfExists(txtLoc, 'Unable to locate your twtxt file')
+      const rawSites = fs.readFileSync(siteListLoc)
+      const sites = JSON.parse(rawSites)
 
-        const txt = fs.readFileSync(txtLoc, 'utf8')
-        console.log(dim, `Found ${txt.split('\n').length} entries.`)
-        console.log(dim, `Adding entry #${txt.split('\n').length + 1}`)
+      const d = new Date().toISOString()
 
-        fs.writeFileSync(txtLoc, d + '\t' + subOption + '\n' + txt)
-        resolve(`Added ${d} ${subOption}`)
-      }
-    }
+      const splitMessage = subOption.split(' ').filter(word => word !== '')
 
-    if (option === 'setup') {
-      const standardInput = process.stdin
-      standardInput.setEncoding('utf-8')
-      console.log(dim, `Please enter your twtxt file location`)
-      standardInput.on('data', answer => {
-        if (answer.trim() === 'exit') {
-          reject(new Error('You will not be able to write on the wall until the configuration is complete'))
+      const mentionHandledMessage = splitMessage.map(word => {
+        if (word.startsWith('@')) {
+          const target = sites.find(u => u.author === word.substring(1))
+          return target
+            ? `@<${target.author} ${target.feed}>`
+            : word
         } else {
-          const config = { hallwayFileLocation: answer.trim() }
-          fs.writeFileSync(configFileLoc, JSON.stringify(config))
-          resolve('Created config file, you may now write on the wall')
+          return word
         }
       })
+
+      const finalMessage = mentionHandledMessage.join(' ')
+
+      const txt = fs.readFileSync(txtLoc, 'utf8')
+      console.log(dim, `Found ${txt.split('\n').length} entries.`)
+      console.log(dim, `Adding entry #${txt.split('\n').length + 1}`)
+
+      fs.writeFileSync(txtLoc, d + '\t' + finalMessage + '\n' + txt)
+      resolve(`Added ${d} ${finalMessage}`)
     }
   })
 }
 
-module.exports = { enterHallway }
+const hallwaySetup = configFileLoc => {
+  return new Promise((resolve, reject) => {
+    const standardInput = process.stdin
+    standardInput.setEncoding('utf-8')
+    console.log(dim, `Please enter your twtxt file location`)
+    standardInput.on('data', answer => {
+      if (answer.trim() === 'exit') {
+        reject(new Error('You will not be able to write on the wall until the configuration is complete'))
+      } else {
+        const config = { hallwayFileLocation: answer.trim() }
+        fs.writeFileSync(configFileLoc, JSON.stringify(config))
+        resolve('Created config file, you may now write on the wall')
+      }
+    })
+  })
+}
+
+module.exports = { hallwaySetup, writeInHallway }
