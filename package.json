@@ -15,7 +15,8 @@
     "webring": "webring.js"
   },
   "scripts": {
-    "test": "standard && ava --verbose"
+    "test": "standard && ava --verbose",
+    "fix": "standard --fix"
   },
   "dependencies": {
     "cli-table3": "^0.5.1",

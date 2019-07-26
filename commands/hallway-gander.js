@@ -67,7 +67,7 @@ const fetchFeed = site => {
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
     .catch(_ => {
-      console.error(red, `Unable to correctly fetch ${site.author}'s feed correctly`)
+      console.error(red, `Unable to correctly fetch ${site.author}'s feed`)
     })
 }
 

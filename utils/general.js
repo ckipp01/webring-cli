@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 
-const dim = '\x1b[2m'
+const dim = '\x1b[2m%s\x1b[0m'
 const red = '\x1b[31m%s\x1b[0m'
 
 const checkIfExists = (fileLoc, msg) => {

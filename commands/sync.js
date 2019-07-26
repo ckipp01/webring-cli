@@ -35,4 +35,20 @@ const fetchSites = (webringSitesUrl, siteListLoc) => {
   })
 }
 
-module.exports = { fetchSites }
+const getMostRecent = () => new Promise((resolve, reject) => {
+  const options = {
+    headers: {
+      accept: 'application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*'
+    },
+    timeout: 2000
+  }
+
+  const latest = fetch('https://registry.npmjs.org/webring-cli', options)
+    .then(rawResponse => rawResponse.text())
+    .then(data => JSON.parse(data)['dist-tags'].latest)
+    .catch(err => { reject(err.message) })
+
+  resolve(latest)
+})
+
+module.exports = { fetchSites, getMostRecent }

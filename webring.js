@@ -9,10 +9,10 @@ const program = require('commander')
 const { dim, red } = require('./utils/general')
 const { enterHallway } = require('./commands/hallway')
 const { fetchHallway } = require('./commands/hallway-gander')
-const { fetchSites } = require('./commands/sync')
+const { fetchSites, getMostRecent } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
 const { listHallwayMembers, listSites, listRss } = require('./commands/list')
-const wcli = require('./package.json')
+const pkg = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
 const siteListLoc = path.join(webringBase, 'sites.json')
@@ -30,10 +30,19 @@ if (!fs.existsSync(webringBase)) {
 }
 
 program
-  .version(wcli.version, '-v, --version')
+  .version(pkg.version, '-v, --version')
   .command('sync')
   .description('syncs latest sites.js file from the xxiivv webring and the hallway feeds')
   .action(async () => {
+    try {
+      const latest = await getMostRecent()
+      if (pkg.version < latest) {
+        console.log(red, `You're currently using ${pkg.version}, but a newer version, ${latest} is available`)
+      }
+    } catch (err) {
+      console.error(`Unable to see if your version is the latest webring-cli\n${err.message}`)
+    }
+
     try {
       const sitesSucces = await fetchSites(webringSitesUrl, siteListLoc)
       console.log(dim, sitesSucces)
