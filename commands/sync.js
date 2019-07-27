@@ -12,8 +12,8 @@ const cleanLine = line => {
   return JSON.parse(cleanJSON)
 }
 
-const fetchSites = (webringSitesUrl, siteListLoc) => {
-  return new Promise((resolve, reject) => {
+const fetchSites = (webringSitesUrl, siteListLoc) =>
+  new Promise((resolve, reject) => {
     fetch(webringSitesUrl)
       .then(rawResponse => rawResponse.text())
       .then(data => {
@@ -33,7 +33,6 @@ const fetchSites = (webringSitesUrl, siteListLoc) => {
         reject(new Error(`Unable to fetch and parse sites.js -> ${err.message}`))
       })
   })
-}
 
 const getMostRecent = () => new Promise((resolve, reject) => {
   const options = {

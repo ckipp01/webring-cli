@@ -32,7 +32,7 @@ if (!fs.existsSync(webringBase)) {
 program
   .version(pkg.version, '-v, --version')
   .command('sync')
-  .description('syncs latest sites.js file from the xxiivv webring and the hallway feeds')
+  .description('syncs latest sites.js file from the xxiivv webring')
   .action(async () => {
     try {
       const latest = await getMostRecent()
@@ -40,7 +40,7 @@ program
         console.log(red, `You're currently using ${pkg.version}, but a newer version, ${latest} is available`)
       }
     } catch (err) {
-      console.error(`Unable to see if your version is the latest webring-cli\n${err.message}`)
+      console.error(red, `Unable to see if your version is the latest webring-cli\n${err.message}`)
     }
 
     try {

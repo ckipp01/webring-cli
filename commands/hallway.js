@@ -4,8 +4,8 @@ const fs = require('fs')
 
 const { checkIfExists, dim } = require('../utils/general')
 
-const writeInHallway = (configFileLoc, siteListLoc, subOption) => {
-  return new Promise((resolve, reject) => {
+const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
+  new Promise((resolve, reject) => {
     checkIfExists(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
     checkIfExists(siteListLoc, 'You need to run webring sync before writing in the hallway')
     if (typeof subOption !== 'string') {
@@ -45,10 +45,9 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) => {
       resolve(`Added ${d} ${finalMessage}`)
     }
   })
-}
 
-const hallwaySetup = configFileLoc => {
-  return new Promise((resolve, reject) => {
+const hallwaySetup = configFileLoc =>
+  new Promise((resolve, reject) => {
     const standardInput = process.stdin
     standardInput.setEncoding('utf-8')
     console.log(dim, `Please enter your twtxt file location`)
@@ -62,6 +61,5 @@ const hallwaySetup = configFileLoc => {
       }
     })
   })
-}
 
 module.exports = { hallwaySetup, writeInHallway }

@@ -71,8 +71,8 @@ const fetchFeed = site => {
     })
 }
 
-const fetchHallway = (siteListLoc, subOption) => {
-  return new Promise((resolve, reject) => {
+const fetchHallway = (siteListLoc, subOption) =>
+  new Promise((resolve, reject) => {
     checkIfExists(siteListLoc, 'Please run webring fetch first')
 
     const rawJson = fs.readFileSync(siteListLoc)
@@ -113,6 +113,5 @@ const fetchHallway = (siteListLoc, subOption) => {
       })
       .catch(err => reject(new Error(`Unable to fetch and display hallway feeds -> ${err.message}`)))
   })
-}
 
 module.exports = { fetchHallway, timeAgo }
