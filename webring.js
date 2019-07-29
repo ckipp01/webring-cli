@@ -7,11 +7,12 @@ const path = require('path')
 const program = require('commander')
 
 const { dim, red } = require('./utils/general')
-const { hallwaySetup, writeInHallway } = require('./commands/hallway')
 const { fetchHallway } = require('./commands/hallway-gander')
 const { fetchSites, getMostRecent } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
+const { createConfigAndEnterTwtxtLocation, setMessageLimit } = require('./commands/hallway-setup')
 const { listHallwayMembers, listSites, listRss } = require('./commands/list')
+const { writeInHallway } = require('./commands/hallway')
 const pkg = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
@@ -37,15 +38,15 @@ program
     try {
       const latest = await getMostRecent()
       if (pkg.version < latest) {
-        console.log(red, `You're currently using ${pkg.version}, but a newer version, ${latest} is available`)
+        console.log(red, ` You're currently using ${pkg.version}, but a newer version, ${latest} is available`)
       }
     } catch (err) {
-      console.error(red, `Unable to see if your version is the latest webring-cli\n${err.message}`)
+      console.error(red, ` Unable to see if your version is the latest webring-cli\n${err.message}`)
     }
 
     try {
       const sitesSucces = await fetchSites(webringSitesUrl, siteListLoc)
-      console.log(dim, sitesSucces)
+      console.log(dim, ` ${sitesSucces}`)
     } catch (err) {
       console.error(red, err.message)
     }
@@ -96,15 +97,16 @@ program
   .action(async (options, subOption) => {
     try {
       if (options === 'gander') {
-        const ganderResponse = await fetchHallway(siteListLoc, subOption)
+        const ganderResponse = await fetchHallway(siteListLoc, configFileLoc, subOption)
         console.log(ganderResponse.toString())
       } else if (options === 'members') {
         const memberTable = listHallwayMembers(siteListLoc)
         console.log(memberTable.toString())
       } else if (options === 'setup') {
-        const hallwayResponse = await hallwaySetup(configFileLoc)
-        console.log(hallwayResponse)
-        process.exit()
+        const twtxtResponse = await createConfigAndEnterTwtxtLocation(configFileLoc)
+        console.log(dim, twtxtResponse)
+        const messageLimitResponse = await setMessageLimit(configFileLoc)
+        console.log(messageLimitResponse)
       } else if (options === 'write') {
         const hallwayResponse = await writeInHallway(configFileLoc, siteListLoc, subOption)
         console.log(hallwayResponse)

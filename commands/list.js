@@ -3,7 +3,7 @@
 const fs = require('fs')
 const Table = require('cli-table3')
 
-const { checkIfExists } = require('../utils/general')
+const { checkIfExistsOrThrow } = require('../utils/general')
 
 const groupGroupByTwo = (group, next) => {
   if (group.length === 0) {
@@ -19,11 +19,11 @@ const groupGroupByTwo = (group, next) => {
 }
 
 const listSites = siteListLoc => {
-  checkIfExists(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
 
   const table = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['webring sites', '']
   })
@@ -38,11 +38,11 @@ const listSites = siteListLoc => {
 }
 
 const listRss = siteListLoc => {
-  checkIfExists(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
 
   const table = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'rss feed']
   })
@@ -58,11 +58,11 @@ const listRss = siteListLoc => {
 }
 
 const listHallwayMembers = siteListLoc => {
-  checkIfExists(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
 
   const table = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['member', 'twtxt location']
   })

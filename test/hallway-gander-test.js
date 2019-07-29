@@ -6,15 +6,16 @@ const test = require('ava')
 
 const { fetchHallway, timeAgo } = require('../commands/hallway-gander')
 
+const validConfigLoc = path.join(__dirname, 'resources', 'valid', 'config.json')
 const validSiteListLoc = path.join(__dirname, 'resources', 'valid', 'sites.json')
 const validSiteInvalidFeedLoc = path.join(__dirname, 'resources', 'valid', 'valid-sites-invalid-feed.json')
 
 test('hallway gander with no filtering should display correct table', async t => {
-  const hallwayTable = await fetchHallway(validSiteListLoc, null)
+  const hallwayTable = await fetchHallway(validSiteListLoc, validConfigLoc, null)
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'post', 'date'],
     colWidths: [15, 60, 15],
@@ -32,11 +33,11 @@ test('hallway gander with no filtering should display correct table', async t =>
 })
 
 test('hallway gander with an added filter for the user works as expected', async t => {
-  const hallwayTable = await fetchHallway(validSiteListLoc, 'ckipp')
+  const hallwayTable = await fetchHallway(validSiteListLoc, validConfigLoc, 'ckipp')
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'post', 'date'],
     colWidths: [15, 60, 15],
@@ -54,11 +55,11 @@ test('hallway gander with an added filter for the user works as expected', async
 })
 
 test('hallway gander with an added filter for the channel works as expected', async t => {
-  const hallwayTable = await fetchHallway(validSiteListLoc, 'meta')
+  const hallwayTable = await fetchHallway(validSiteListLoc, validConfigLoc, 'meta')
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'post', 'date'],
     colWidths: [15, 60, 15],
@@ -74,11 +75,11 @@ test('hallway gander with an added filter for the channel works as expected', as
 })
 
 test('hallway gander with an added filter on tag works as expected', async t => {
-  const hallwayTable = await fetchHallway(validSiteListLoc, 'twtxt')
+  const hallwayTable = await fetchHallway(validSiteListLoc, validConfigLoc, 'twtxt')
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'post', 'date'],
     colWidths: [15, 60, 15],
@@ -94,16 +95,16 @@ test('hallway gander with an added filter on tag works as expected', async t => 
 
 test('hallway gander returns correct error when unable to find what you are filtering on', async t => {
   try {
-    await fetchHallway(validSiteListLoc, 'orange')
+    await fetchHallway(validSiteListLoc, validConfigLoc, 'orange')
   } catch (err) {
-    t.is(err.message, 'No author, tags, or channel matches orange in the last 20 messages')
+    t.is(err.message, 'No author, tags, or channel matches orange in the last 5 messages')
   }
 })
 
 test(`hallway gander returns correct error when it's unable to parse the feeds correctly`, async t => {
   try {
-    await fetchHallway(validSiteInvalidFeedLoc, null)
+    await fetchHallway(validSiteInvalidFeedLoc, validConfigLoc, null)
   } catch (err) {
-    t.is(err.message, 'No author, tags, or channel matches null in the last 20 messages')
+    t.is(err.message, 'No author, tags, or channel matches null in the last 5 messages')
   }
 })

@@ -14,7 +14,7 @@ test('That the the webring sites command correctly reads and displays all the si
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['webring sites', '']
   })
@@ -48,7 +48,7 @@ test('That the webring rss command correctly reads, and displays the rss feeds c
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['author', 'rss feed']
   })
@@ -81,7 +81,7 @@ test('That the webring hallway member command lists all members and their feed l
 
   const testTable = new Table({
     style: {
-      head: ['grey']
+      head: ['yellow']
     },
     head: ['member', 'twtxt location']
   })

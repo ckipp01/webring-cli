@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 const Table = require('cli-table3')
 
-const { checkIfExists, red } = require('../utils/general')
+const { checkIfExistsOrThrow, red } = require('../utils/general')
 
 const timeAgo = dateParam => {
   const date = new Date(dateParam)
@@ -71,12 +71,16 @@ const fetchFeed = site => {
     })
 }
 
-const fetchHallway = (siteListLoc, subOption) =>
+const fetchHallway = (siteListLoc, configFileLoc, subOption) =>
   new Promise((resolve, reject) => {
-    checkIfExists(siteListLoc, 'Please run webring fetch first')
+    checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
+    checkIfExistsOrThrow(configFileLoc, 'Please run webring hallway setup first')
 
     const rawJson = fs.readFileSync(siteListLoc)
     const siteObjects = JSON.parse(rawJson)
+    const rawConfig = fs.readFileSync(configFileLoc)
+    const amountToDisplay = JSON.parse(rawConfig).messageAmountToShow
+
     const feedObjects = siteObjects
       .filter(site => site.feed)
       .map(site => ({ author: site.author, feed: site.feed }))
@@ -92,16 +96,16 @@ const fetchHallway = (siteListLoc, subOption) =>
           : null
 
         const filteredFeeds = filter
-          ? feeds.filter(post => post.author === filter || post.body.search('#' + filter) !== -1 || post.body.startsWith('/' + filter)).slice(0, 20).reverse()
-          : feeds.slice(0, 20).reverse()
+          ? feeds.filter(post => post.author === filter || post.body.search('#' + filter) !== -1 || post.body.startsWith('/' + filter)).slice(0, amountToDisplay).reverse()
+          : feeds.slice(0, amountToDisplay).reverse()
 
         if (filteredFeeds.length < 1) {
-          reject(new Error(`No author, tags, or channel matches ${subOption} in the last 20 messages`))
+          reject(new Error(`No author, tags, or channel matches ${subOption} in the last ${amountToDisplay} messages`))
         }
 
         const table = new Table({
           style: {
-            head: ['grey']
+            head: ['yellow']
           },
           head: ['author', 'post', 'date'],
           colWidths: [15, 60, 15],

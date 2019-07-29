@@ -2,12 +2,12 @@
 
 const fs = require('fs')
 
-const { checkIfExists, dim } = require('../utils/general')
+const { checkIfExistsOrThrow, dim } = require('../utils/general')
 
 const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
   new Promise((resolve, reject) => {
-    checkIfExists(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
-    checkIfExists(siteListLoc, 'You need to run webring sync before writing in the hallway')
+    checkIfExistsOrThrow(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
+    checkIfExistsOrThrow(siteListLoc, 'You need to run webring sync before writing in the hallway')
     if (typeof subOption !== 'string') {
       reject(new Error(`Your message can't be empty`))
     } else {
@@ -15,7 +15,7 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
       const config = JSON.parse(rawConfig)
       const txtLoc = config.hallwayFileLocation
 
-      checkIfExists(txtLoc, 'Unable to locate your twtxt file')
+      checkIfExistsOrThrow(txtLoc, 'Unable to locate your twtxt file')
 
       const rawSites = fs.readFileSync(siteListLoc)
       const sites = JSON.parse(rawSites)
@@ -46,20 +46,4 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
     }
   })
 
-const hallwaySetup = configFileLoc =>
-  new Promise((resolve, reject) => {
-    const standardInput = process.stdin
-    standardInput.setEncoding('utf-8')
-    console.log(dim, `Please enter your twtxt file location`)
-    standardInput.on('data', answer => {
-      if (answer.trim() === 'exit') {
-        reject(new Error('You will not be able to write on the wall until the configuration is complete'))
-      } else {
-        const config = { hallwayFileLocation: answer.trim() }
-        fs.writeFileSync(configFileLoc, JSON.stringify(config))
-        resolve('Created config file, you may now write on the wall')
-      }
-    })
-  })
-
-module.exports = { hallwaySetup, writeInHallway }
+module.exports = { writeInHallway }

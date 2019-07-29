@@ -4,10 +4,10 @@ const { exec } = require('child_process')
 const fs = require('fs')
 const platform = require('os').platform()
 
-const { checkIfExists, dim } = require('../utils/general')
+const { checkIfExistsOrThrow, dim } = require('../utils/general')
 
 const goToRandom = sitesLocation => {
-  checkIfExists(sitesLocation, 'Please run webring sync first')
+  checkIfExistsOrThrow(sitesLocation, 'Please run webring sync first')
 
   const rawJson = fs.readFileSync(sitesLocation)
   const siteObjects = JSON.parse(rawJson)
