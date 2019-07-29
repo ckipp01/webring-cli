@@ -6,13 +6,24 @@ const homedir = require('os').homedir()
 const path = require('path')
 const program = require('commander')
 
-const { dim, red } = require('./utils/general')
+const {
+  dim,
+  dimBegin,
+  end,
+  red,
+  yellow,
+  yellowBegin
+} = require('./utils/general')
 const { fetchHallway } = require('./commands/hallway-gander')
 const { fetchSites, getMostRecent } = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
-const { createConfigAndEnterTwtxtLocation, setMessageLimit } = require('./commands/hallway-setup')
+const {
+  createConfigAndEnterTwtxtLocation,
+  setGitRepo,
+  setMessageLimit
+} = require('./commands/hallway-setup')
 const { listHallwayMembers, listSites, listRss } = require('./commands/list')
-const { writeInHallway } = require('./commands/hallway')
+const { writeInHallway } = require('./commands/hallway-write')
 const pkg = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
@@ -106,12 +117,14 @@ program
         const twtxtResponse = await createConfigAndEnterTwtxtLocation(configFileLoc)
         console.log(dim, twtxtResponse)
         const messageLimitResponse = await setMessageLimit(configFileLoc)
-        console.log(messageLimitResponse)
+        console.log(dim, messageLimitResponse)
+        const gitRepoResponse = await setGitRepo(configFileLoc)
+        console.log(gitRepoResponse)
       } else if (options === 'write') {
         const hallwayResponse = await writeInHallway(configFileLoc, siteListLoc, subOption)
-        console.log(hallwayResponse)
+        console.log(dim, hallwayResponse)
       } else {
-        console.error(red, `This isn't a valid command for the hallway`)
+        console.log(yellow, ' a voice echoes in the hallway...')
       }
     } catch (err) {
       console.error(red, err.message)
@@ -121,10 +134,10 @@ program
 program.parse(process.argv)
 
 if (program.args.length === 0) {
-  console.info(dim, `
-  xxiivv webring
+  console.info(`
+  ${yellowBegin}xxiivv webring${end}
 
-  This webring is an attempt to inspire artists & developers to create
-  and maintain their own website and share traffic among each other`
+  ${dimBegin}This webring is an attempt to inspire artists & developers to create
+  and maintain their own website and share traffic among each other${end}`
   )
 }

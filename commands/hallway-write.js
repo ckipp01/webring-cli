@@ -1,5 +1,6 @@
 'use strict'
 
+const { exec } = require('child_process')
 const fs = require('fs')
 
 const { checkIfExistsOrThrow, dim } = require('../utils/general')
@@ -42,7 +43,23 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
       console.log(dim, `Adding entry #${txt.split('\n').length + 1}`)
 
       fs.writeFileSync(txtLoc, d + '\t' + finalMessage + '\n' + txt)
-      resolve(`Added ${d} ${finalMessage}`)
+
+      if (config.gitRepo) {
+        const cutOff = txtLoc.lastIndexOf('/')
+        const dir = txtLoc.slice(0, cutOff)
+        exec(`
+        git -C ${dir} add . &&
+        git -C ${dir} commit -m "shouting in the hallway" &&
+        git -C ${dir} push origin master
+        `, err => {
+          if (err) {
+            reject(new Error(err.message))
+          }
+        })
+        resolve(`Added ${d} ${finalMessage}\nPushed repo`)
+      } else {
+        resolve(`Added ${d} ${finalMessage}`)
+      }
     }
   })
 

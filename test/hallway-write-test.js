@@ -3,7 +3,7 @@
 const path = require('path')
 const test = require('ava')
 
-const { writeInHallway } = require('../commands/hallway')
+const { writeInHallway } = require('../commands/hallway-write')
 
 const invalidConfigFileLoc = path.join(__dirname, 'resources', 'invalid', 'fake-config.json')
 const nonExistantConfigFileLoc = path.join(__dirname, 'resources', 'tmp', 'fake-config.json')

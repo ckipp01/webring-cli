@@ -60,6 +60,10 @@ You'll then be able to use the other commands.
 The first command you'll have to run while using the hallway is `webring hallway setup`. This will walk you through setting up the location of your twtxt file and setting the amount of messages you'd like displayed.
 If you don't have a twtxt account and simply want to view the hallway, then just leave the twtxt setting blank.
 
+During setup your will also have the option to set the amount of messages you'd like displayed.
+The final setting can be used to automatically push your twtxt file if you're using a git repo.
+Note this relies on a clean branch to work correctly.
+
 When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
 If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.
 

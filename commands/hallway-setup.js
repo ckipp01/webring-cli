@@ -56,7 +56,7 @@ const createConfigAndEnterTwtxtLocation = configFileLoc =>
   })
 
 const setMessageLimit = configFileLoc =>
-  new Promise(resolve => {
+  new Promise((resolve, reject) => {
     const readline = require('readline').createInterface({
       input: process.stdin,
       output: process.stdout
@@ -70,8 +70,11 @@ const setMessageLimit = configFileLoc =>
       if (answer.trim() === '') {
         readline.close()
         resolve(' Keeping current amount')
+      } else if (isNaN(answer)) {
+        readline.close()
+        reject(new Error('Value must be a valid number'))
       } else {
-        const newValue = { messageAmountToShow: answer.trim() }
+        const newValue = { messageAmountToShow: Number(answer.trim()) }
         const newConf = Object.assign(config, newValue)
         readline.close()
         fs.writeFileSync(configFileLoc, JSON.stringify(newConf))
@@ -80,4 +83,33 @@ const setMessageLimit = configFileLoc =>
     })
   })
 
-module.exports = { createConfigAndEnterTwtxtLocation, setMessageLimit }
+const setGitRepo = configFileLoc =>
+  new Promise(resolve => {
+    const readline = require('readline').createInterface({
+      input: process.stdin,
+      output: process.stdout
+    })
+    const rawConfig = fs.readFileSync(configFileLoc)
+    const config = JSON.parse(rawConfig)
+    const currentValue = config.gitRepo
+    console.log(yellow, ' Is your twtxt file in a git repo? If this is set to true, it will automatically be deployed')
+    console.log(dim, ` Current value: ${currentValue}`)
+    readline.question(` ${dimBegin}--> `, answer => {
+      if (answer.trim() === '') {
+        readline.close()
+        resolve(' Keeping current amount')
+      } else {
+        const newValue = { gitRepo: (answer.trim() === 'true') }
+        const newConf = Object.assign(config, newValue)
+        readline.close()
+        fs.writeFileSync(configFileLoc, JSON.stringify(newConf))
+        resolve(` Successfully set git repo to ${answer}`)
+      }
+    })
+  })
+
+module.exports = {
+  createConfigAndEnterTwtxtLocation,
+  setGitRepo,
+  setMessageLimit
+}
