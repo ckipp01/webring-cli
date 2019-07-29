@@ -52,14 +52,13 @@ You'll then be able to use the other commands.
   Options:
     gander <user | channel | tag>  take a gander at the hallway
     members                        shows a list of all hallway members and their twtxt file location
-    setup                          setup location of twtxt file
+    setup                          setup options for hallway related settings
     write <message>                write a message on the wall
     -h, --help                     output usage information
 ```
 
-You will be able to `webring hallway gander` right away, but if you want the ability to write to your hallway twtxt file, you'll need to run `webring hallway setup` first.
-This will ask you for the path to your twtxt file in order to write to it.
-
+The first command you'll have to run while using the hallway is `webring hallway setup`. This will walk you through setting up the location of your twtxt file and setting the amount of messages you'd like displayed.
+If you don't have a twtxt account and simply want to view the hallway, then just leave the twtxt setting blank.
 
 When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
 If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.

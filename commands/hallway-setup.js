@@ -15,7 +15,7 @@ const baseConfig = {
 }
 
 const createConfigAndEnterTwtxtLocation = configFileLoc =>
-  new Promise((resolve, reject) => {
+  new Promise(resolve => {
     const readline = require('readline').createInterface({
       input: process.stdin,
       output: process.stdout
@@ -25,7 +25,7 @@ const createConfigAndEnterTwtxtLocation = configFileLoc =>
       readline.question(` ${dimBegin} --> `, answer => {
         if (answer.trim() === '') {
           readline.close()
-          reject(new Error('You will not be able to write on the wall until setup is complete'))
+          resolve('Your current value is blank. If you want to change this later, just run setup again')
         } else {
           const newValue = { hallwayFileLocation: answer.trim() }
           const newConf = Object.assign(baseConfig, newValue)

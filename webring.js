@@ -92,7 +92,7 @@ program
   .description('a voice echoes in the hallway')
   .option('gander <user | channel | tag>', 'take a gander at the hallway')
   .option('members', 'shows a list of all hallway members and their twtxt file location')
-  .option('setup', 'setup location of twtxt file')
+  .option('setup', 'setup for hallway related settings')
   .option('write <message>', 'write a message on the wall')
   .action(async (options, subOption) => {
     try {
