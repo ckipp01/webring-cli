@@ -14,7 +14,7 @@ const goToRandom = sitesLocation => {
 
   const randomSite = siteObjects[Math.floor((Math.random() * siteObjects.length))]
 
-  console.log(dim, `Attempting to Navigate to ${randomSite.url}`)
+  console.log(dim, `Attempting to Navigate to ${randomSite.url}...`)
 
   if (platform === 'linux' || platform === 'freebsd' || platform === 'openbsd') {
     exec(`xdg-open ${randomSite.url}`, error => {

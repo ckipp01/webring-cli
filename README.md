@@ -4,6 +4,8 @@
 
 The webring-cli is the command-line interface for the [xxiivv webring](https://webring.xxiivv.com).
 
+The webring is an attempt to inspire artists & developers to create and maintain their own website and share traffic among each other.
+
 ## Installation
 
 Simply run...
@@ -29,7 +31,7 @@ npm install -g webring-cli
     sync               syncs latest sites.js file from the xxiivv webring
     sites              lists all the sites in the webring
     random             brings you to a random site in the webring
-    rss                shows you a list of all available rss feeds in the webring
+    rss [options]      rss feeds are alive and well
     hallway [options]  a voice echoes in the hallway
 ```
 
@@ -67,6 +69,21 @@ Note this relies on a clean branch to work correctly.
 When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
 If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.
 
+### Rss usage
+
+```
+❯ webring rss -h
+  Usage: rss [options]
+
+  rss feeds are alive and well
+
+  Options:
+    feeds          shows you a list of all available rss feeds and their authors
+    gander <feed>  shows you either all of the feeds combined or a specific feed
+    -h, --help     output usage information
+```
+The rss reader works by fetching either all the rss feeds or a single feed, parsing it, creating html out of it, and then printing it to a temp file.
+Then that temp file is opened up in your browser. If you look in your os's temp directory, you'll find the file there labeled as rss.html.
 ## Building locally
 
 If you'd like to build locally, you're able to clone this repository and run it by following the commands below.

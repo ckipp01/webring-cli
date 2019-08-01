@@ -4,33 +4,12 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 const Table = require('cli-table3')
 
-const { checkIfExistsOrThrow, red } = require('../utils/general')
-
-const timeAgo = dateParam => {
-  const date = new Date(dateParam)
-  const today = new Date()
-  const yesterday = new Date(today - 86400000)
-  const seconds = Math.round((today - date) / 1000)
-  const minutes = Math.round(seconds / 60)
-  const isToday = today.toDateString() === date.toDateString()
-  const isYesterday = yesterday.toDateString() === date.toDateString()
-
-  if (seconds < 5) {
-    return 'just now'
-  } else if (seconds < 60) {
-    return `${seconds} seconds ago`
-  } else if (seconds < 90) {
-    return 'a minute ago'
-  } else if (minutes < 60) {
-    return `${minutes} minutes ago`
-  } else if (isToday) {
-    return `${Math.floor(minutes / 60)} hours ago`
-  } else if (isYesterday) {
-    return 'yesterday'
-  }
-
-  return `${Math.floor(minutes / 1440)} days ago`
-}
+const {
+  checkIfExistsOrThrow,
+  red,
+  reTag,
+  timeAgo
+} = require('../utils/general')
 
 const simplifyPosts = allPosts => {
   return allPosts.map(post => {
@@ -42,8 +21,6 @@ const simplifyPosts = allPosts => {
     }))
   })
 }
-
-const reTag = /([^&]|^)#([a-zA-Z0-9]+)/g
 
 const parseFeed = (author, feed) => {
   const lines = feed.split('\n')
@@ -63,7 +40,7 @@ const parseFeed = (author, feed) => {
 }
 
 const fetchFeed = site => {
-  return fetch(site.feed)
+  return fetch(site.feed, { timeout: 3000 })
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
     .catch(_ => {

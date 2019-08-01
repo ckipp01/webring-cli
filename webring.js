@@ -7,6 +7,13 @@ const path = require('path')
 const program = require('commander')
 
 const {
+  fetchFeed,
+  fetchFeedUrls,
+  htmlifyFeed,
+  orderByDate,
+  parseAtomFeed,
+  parseRssFeed } = require('./commands/rss-gander')
+const {
   dim,
   dimBegin,
   end,
@@ -88,11 +95,26 @@ program
 
 program
   .command('rss')
-  .description('shows you a list of all available rss feeds in the webring')
-  .action(() => {
+  .description(`rss feeds are alive and well`)
+  .option('feeds', 'shows you a list of all available rss feeds and their authors')
+  .option('gander <feed>', 'shows you either all of the feeds combined or a specific feed')
+  .action(async (options, subOption) => {
     try {
-      const rssTable = listRss(siteListLoc)
-      console.log(rssTable.toString())
+      if (options === 'feeds') {
+        const rssTable = listRss(siteListLoc)
+        console.log(rssTable.toString())
+      } else if (options === 'gander') {
+        const feedUrls = await fetchFeedUrls(subOption, siteListLoc)
+        const feeds = await Promise.all(feedUrls.map(feed => fetchFeed(feed.rss)))
+        const standardized = await feeds.map(feed => {
+          return 'feed' in feed
+            ? parseAtomFeed(feed)
+            : parseRssFeed(feed)
+        })
+        const flattend = [].concat.apply([], standardized)
+        const ordered = orderByDate(flattend)
+        await htmlifyFeed(ordered)
+      }
     } catch (err) {
       console.error(red, err.message)
     }
