@@ -38,7 +38,7 @@ const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
 
       const finalMessage = mentionHandledMessage.join(' ')
 
-      const txt = fs.readFileSync(txtLoc)
+      const txt = fs.readFileSync(txtLoc, 'utf8')
       console.log(dim, `Found ${txt.split('\n').length} entries.`)
       console.log(dim, `Adding entry #${txt.split('\n').length + 1}`)
 
