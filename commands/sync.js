@@ -3,6 +3,9 @@
 const fetch = require('node-fetch')
 const fs = require('fs')
 
+const { checkIfExistsOrThrow, red } = require('../utils/general')
+const indental = require('../utils/indental')
+
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
   const cleanJSON = dirtyString
@@ -50,4 +53,36 @@ const getMostRecent = () => new Promise((resolve, reject) => {
   resolve(latest)
 })
 
-module.exports = { fetchSites, getMostRecent }
+const fetchWiki = site => {
+  return fetch(site.wiki, { timeout: 3000 })
+    .then(rawResponse => rawResponse.text())
+    .then(data => ({ [site.author.toUpperCase()]: indental(data) }))
+    .catch(_ => {
+      console.error(red, `Unable to correctly fetch ${site.author}'s wiki`)
+    })
+}
+
+const fetchWikis = siteListLoc =>
+  new Promise((resolve, reject) => {
+    checkIfExistsOrThrow(siteListLoc, 'Unable to fetch wikis until sites are synced. Please run sync again')
+
+    const rawJson = fs.readFileSync(siteListLoc)
+    const siteObjects = JSON.parse(rawJson)
+    const wikiObjects = siteObjects
+      .filter(site => site.wiki)
+      .map(site => ({ author: site.author, wiki: site.wiki }))
+
+    Promise.all(wikiObjects.map(site => fetchWiki(site)))
+      .then(wikis => wikis.filter(wiki => wiki !== undefined))
+      .then(wikis => wikis.reduce((acc, wiki) => ({ ...acc, ...wiki }), {}))
+      .then(wikis => resolve(wikis))
+      .catch(err => { reject(new Error(`Unable to correctly parse wikis\n\n${err.message}`)) })
+  })
+
+const storeWikis = (wikiCacheLoc, wikis) =>
+  new Promise(resolve => {
+    fs.writeFileSync(wikiCacheLoc, JSON.stringify(wikis))
+    resolve(`Synced ${Object.keys(wikis).length} wikis`)
+  })
+
+module.exports = { fetchSites, fetchWikis, getMostRecent, storeWikis }

@@ -7,11 +7,12 @@ const dimBegin = '\x1b[2m'
 const yellowBegin = '\x1b[33m'
 const yellow = '\x1b[33m%s\x1b[0m'
 const red = '\x1b[31m%s\x1b[0m'
+const redBegin = '\x1b[31m'
 const end = '\x1b[0m'
 
 const checkIfExistsOrThrow = (fileLoc, msg) => {
   if (!fs.existsSync(fileLoc)) {
-    throw new Error(`${fileLoc} does not exist\n${msg}`)
+    throw new Error(` ${fileLoc} does not exist\n${msg}`)
   }
 }
 
@@ -86,6 +87,7 @@ module.exports = {
   reTag,
   timeAgo,
   red,
+  redBegin,
   style,
   yellow,
   yellowBegin

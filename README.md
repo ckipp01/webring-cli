@@ -33,17 +33,19 @@ npm install -g webring-cli
     random             brings you to a random site in the webring
     rss [options]      rss feeds are alive and well
     hallway [options]  a voice echoes in the hallway
+    wiki               a decentralized encyclopedia REPL
 ```
 
 The first command you'll want to run is `webring sync`.
-This will pull down the latest sites.js file from the webring, parse it, and store it in `~/.webring`
+This will pull down the latest sites.js file from the webring, parse it, and store it in `~/.webring`.
+It will also then find the existing sites that have wikis and store a copy to be able to navigated with the wiki REPL.
 You'll then be able to use the other commands.
 
 ### The hallway
 
 > A voice echoes in the hallway...
 
-### Hallway usage
+### hallway usage
 
 ```
 ❯ webring hallway -h
@@ -69,7 +71,7 @@ Note this relies on a clean branch to work correctly.
 When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
 If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.
 
-### Rss usage
+### rss usage
 
 ```
 ❯ webring rss -h
@@ -84,6 +86,27 @@ If you're using this also to maintain a twtxt file outside of the webring, then 
 ```
 The rss reader works by fetching either all the rss feeds or a single feed, parsing it, creating html out of it, and then printing it to a temp file.
 Then that temp file is opened up in your browser. If you look in your os's temp directory, you'll find the file there labeled as rss.html.
+
+### wiki usage
+
+Upon entering `webring wiki` you'll be dropped into a REPL that will allow you to navigate around the webrings wikis.
+The REPL is modeled after [Josh's Compendium](https://gitlab.com/jrc03c/compendium).
+The available commands in the REPL are below
+
+```
+❯ webring wiki
+
+  Usage: [command]
+
+  Commands:
+    ls          list directory contents
+    cd <index>  change directory
+    exit        to exit the repl
+    help        display all commands
+
+wiki >
+```
+
 ## Building locally
 
 If you'd like to build locally, you're able to clone this repository and run it by following the commands below.
@@ -96,9 +119,7 @@ yarn install
 node webring.js [options] [commands]
 ```
 
-The tests for the project are run with [ava](https://github.com/avajs/ava).
-To run them, just enter the command below:
+### Issues?
 
-```
-yarn test
-```
+If you come accross any issues, please submit a [issue](https://github.com/ckipp01/webring-cli/issues).
+

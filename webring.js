@@ -6,6 +6,7 @@ const homedir = require('os').homedir()
 const path = require('path')
 const program = require('commander')
 
+const compendium = require('./commands/wiki')
 const {
   fetchFeed,
   fetchFeedUrls,
@@ -14,6 +15,7 @@ const {
   parseAtomFeed,
   parseRssFeed } = require('./commands/rss-gander')
 const {
+  checkIfExistsOrThrow,
   dim,
   dimBegin,
   end,
@@ -22,7 +24,12 @@ const {
   yellowBegin
 } = require('./utils/general')
 const { fetchHallway } = require('./commands/hallway-gander')
-const { fetchSites, getMostRecent } = require('./commands/sync')
+const {
+  fetchSites,
+  fetchWikis,
+  getMostRecent,
+  storeWikis
+} = require('./commands/sync')
 const { goToRandom } = require('./commands/random')
 const {
   createConfigAndEnterTwtxtLocation,
@@ -34,8 +41,9 @@ const { writeInHallway } = require('./commands/hallway-write')
 const pkg = require('./package.json')
 
 const webringBase = path.join(homedir, '.webring')
-const siteListLoc = path.join(webringBase, 'sites.json')
 const configFileLoc = path.join(webringBase, 'config.json')
+const siteListLoc = path.join(webringBase, 'sites.json')
+const wikiCacheLoc = path.join(webringBase, 'wiki.json')
 
 const webringSitesUrl = 'https://raw.githubusercontent.com/XXIIVV/Webring/master/scripts/sites.js'
 
@@ -51,7 +59,7 @@ if (!fs.existsSync(webringBase)) {
 program
   .version(pkg.version, '-v, --version')
   .command('sync')
-  .description('syncs latest sites.js file from the xxiivv webring')
+  .description('syncs webring sites and wikis')
   .action(async () => {
     try {
       const latest = await getMostRecent()
@@ -65,6 +73,14 @@ program
     try {
       const sitesSucces = await fetchSites(webringSitesUrl, siteListLoc)
       console.log(dim, ` ${sitesSucces}`)
+    } catch (err) {
+      console.error(red, err.message)
+    }
+
+    try {
+      const wikis = await fetchWikis(siteListLoc)
+      const stored = await storeWikis(wikiCacheLoc, wikis)
+      console.log(dim, ` ${stored}`)
     } catch (err) {
       console.error(red, err.message)
     }
@@ -150,6 +166,18 @@ program
       }
     } catch (err) {
       console.error(red, err.message)
+    }
+  })
+
+program
+  .command('wiki')
+  .description('a decentralized encyclopedia REPL')
+  .action(() => {
+    try {
+      checkIfExistsOrThrow(wikiCacheLoc, ' You must run webring setup before viewing the wiki')
+      compendium(wikiCacheLoc)
+    } catch (err) {
+      console.error(red, err)
     }
   })
 
