@@ -28,7 +28,7 @@ npm install -g webring-cli
     -h, --help         output usage information
 
   Commands:
-    sync               syncs latest sites.js file from the xxiivv webring
+    sync               syncs latest sites.js file from the xxiivv webring and cache's wikis
     sites              lists all the sites in the webring
     random             brings you to a random site in the webring
     rss [options]      rss feeds are alive and well
