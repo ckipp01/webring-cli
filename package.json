@@ -19,11 +19,11 @@
     "fix": "standard --fix"
   },
   "dependencies": {
-    "cli-table3": "^0.5.1",
-    "commander": "^2.20.0",
-    "fast-xml-parser": "^3.12.19",
-    "he": "^1.2.0",
-    "node-fetch": "^2.6.0"
+    "cli-table3": "0.5.1",
+    "commander": "3.0.0",
+    "fast-xml-parser": "3.12.19",
+    "he": "1.2.0",
+    "node-fetch": "2.6.0"
   },
   "devDependencies": {
     "ava": "^2.2.0",
