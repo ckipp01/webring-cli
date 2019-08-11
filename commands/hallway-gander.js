@@ -63,7 +63,7 @@ const fetchHallway = (siteListLoc, configFileLoc, subOption) =>
       .map(site => ({ author: site.author, feed: site.feed }))
 
     Promise.all(feedObjects.map(feed => fetchFeed(feed)))
-      .then(allPosts => allPosts.filter(post => post !== undefined))
+      .then(allPosts => allPosts.filter(post => post))
       .then(filteredPosts => simplifyPosts(filteredPosts))
       .then(simplified => [].concat.apply([], simplified))
       .then(merged => merged.sort((a, b) => a.offset - b.offset))

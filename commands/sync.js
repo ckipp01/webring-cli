@@ -73,7 +73,7 @@ const fetchWikis = siteListLoc =>
       .map(site => ({ author: site.author, wiki: site.wiki }))
 
     Promise.all(wikiObjects.map(site => fetchWiki(site)))
-      .then(wikis => wikis.filter(wiki => wiki !== undefined))
+      .then(wikis => wikis.filter(wiki => wiki))
       .then(wikis => wikis.reduce((acc, wiki) => ({ ...acc, ...wiki }), {}))
       .then(wikis => resolve(wikis))
       .catch(err => { reject(new Error(`Unable to correctly parse wikis\n\n${err.message}`)) })
