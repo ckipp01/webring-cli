@@ -40,7 +40,7 @@ const parseFeed = (author, feed) => {
 }
 
 const fetchFeed = site => {
-  return fetch(site.feed, { timeout: 3000 })
+  return fetch(site.feed, { timeout: 5000 })
     .then(rawResponse => rawResponse.text())
     .then(data => ({ author: site.author, feed: parseFeed(site.author, data) }))
     .catch(_ => {

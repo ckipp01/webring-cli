@@ -17,7 +17,7 @@ const cleanLine = line => {
 
 const fetchSites = (webringSitesUrl, siteListLoc) =>
   new Promise((resolve, reject) => {
-    fetch(webringSitesUrl)
+    fetch(webringSitesUrl, { timeout: 5000 })
       .then(rawResponse => rawResponse.text())
       .then(data => {
         const begin = data.indexOf('[') + 1
@@ -42,7 +42,7 @@ const getMostRecent = () => new Promise((resolve, reject) => {
     headers: {
       accept: 'application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*'
     },
-    timeout: 2000
+    timeout: 3000
   }
 
   const latest = fetch('https://registry.npmjs.org/webring-cli', options)
