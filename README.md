@@ -1,6 +1,5 @@
 # webring-cli
 ![npm (tag)](https://img.shields.io/npm/v/webring-cli/latest.svg?color=ebcb8b)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-lightgrey.svg)](https://standardjs.com)
 
 The webring-cli is the command-line interface for the [xxiivv webring](https://webring.xxiivv.com).
 
