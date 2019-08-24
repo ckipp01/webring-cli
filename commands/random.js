@@ -19,7 +19,7 @@ const goToRandom = sitesLocation => {
   if (platform === 'linux' || platform === 'freebsd' || platform === 'openbsd') {
     exec(`xdg-open ${randomSite.url}`, error => {
       if (error) {
-        throw new Error(`Unable to execute xdg-open. If you're not running X this command won't work`)
+        throw new Error('Unable to execute xdg-open. If you\'re not running X this command won\'t work')
       }
     })
   } else if (platform === 'darwin') {

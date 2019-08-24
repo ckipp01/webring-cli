@@ -27,19 +27,19 @@ test('That the the webring sites command correctly reads and displays all the si
   t.deepEqual(sitesTable, testTable)
 })
 
-test(`That the right message is displayed if sync hasn't been ran yet before you run webring sites`, t => {
+test('That the right message is displayed if sync hasn\'t been ran yet before you run webring sites', t => {
   try {
     listSites('fake/site/list/location')
   } catch (err) {
-    t.deepEqual(err, new Error(` fake/site/list/location does not exist\nPlease run webring sync first`))
+    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run webring sync first'))
   }
 })
 
-test(`If a syntax error exists in the file when you read it, the correct error is shown when webring sites is called`, t => {
+test('If a syntax error exists in the file when you read it, the correct error is shown when webring sites is called', t => {
   try {
     listSites(invalidSiteLoc)
   } catch (err) {
-    t.deepEqual(err, new SyntaxError(`Unexpected end of JSON input`))
+    t.deepEqual(err, new SyntaxError('Unexpected end of JSON input'))
   }
 })
 
@@ -60,19 +60,19 @@ test('That the webring rss command correctly reads, and displays the rss feeds c
   t.deepEqual(rssTable, testTable)
 })
 
-test(`That the right message is displayed if sync hasn't been ran yet before you run webring rss`, t => {
+test('That the right message is displayed if sync hasn\'t been ran yet before you run webring rss', t => {
   try {
     listRss('fake/site/list/location')
   } catch (err) {
-    t.deepEqual(err, new Error(` fake/site/list/location does not exist\nPlease run webring sync first`))
+    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run webring sync first'))
   }
 })
 
-test(`If a syntax error exists in the file when you read it, the correct error is shown when webring rss is called`, t => {
+test('If a syntax error exists in the file when you read it, the correct error is shown when webring rss is called', t => {
   try {
     listRss(invalidSiteLoc)
   } catch (err) {
-    t.deepEqual(err, new SyntaxError(`Unexpected end of JSON input`))
+    t.deepEqual(err, new SyntaxError('Unexpected end of JSON input'))
   }
 })
 

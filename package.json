@@ -15,8 +15,9 @@
     "webring": "webring.js"
   },
   "scripts": {
-    "test": "standard && ava --verbose",
-    "fix": "standard --fix"
+    "fix": "eslint --fix",
+    "lint": "eslint commands/*.js",
+    "test": "ava --verbose"
   },
   "dependencies": {
     "cli-table3": "0.5.1",
@@ -27,6 +28,6 @@
   },
   "devDependencies": {
     "ava": "^2.2.0",
-    "standard": "^13.1.0"
+    "eslint": "^6.2.2"
   }
 }

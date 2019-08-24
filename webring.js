@@ -111,7 +111,7 @@ program
 
 program
   .command('rss')
-  .description(`rss feeds are alive and well`)
+  .description('rss feeds are alive and well')
   .option('feeds', 'shows you a list of all available rss feeds and their authors')
   .option('gander <feed>', 'shows you either all of the feeds combined or a specific feed')
   .action(async (options, subOption) => {

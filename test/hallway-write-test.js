@@ -17,10 +17,10 @@ test('Hallway write tells you to run setup first if there is no config file', as
   }
 })
 
-test(`Hallway write errors correctly if it can't find the twtxt file`, async t => {
+test('Hallway write errors correctly if it can\'t find the twtxt file', async t => {
   try {
     await writeInHallway(invalidConfigFileLoc, siteListLoc, 'here is a fake message')
   } catch (err) {
-    t.is(err.message, ` /fake/location/hallway.txt does not exist\nUnable to locate your twtxt file`)
+    t.is(err.message, ' /fake/location/hallway.txt does not exist\nUnable to locate your twtxt file')
   }
 })

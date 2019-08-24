@@ -23,10 +23,10 @@ test('hallway gander with no filtering should display correct table', async t =>
   })
 
   testTable.push(
-    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)],
-    ['ckipp', '@neauoire it\'s good to be here!', timeAgo(`2019-07-04T14:39:13+00:00`)],
-    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
-    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo('2019-07-04T05:04:52+00:00')],
+    ['ckipp', '@neauoire it\'s good to be here!', timeAgo('2019-07-04T14:39:13+00:00')],
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo('2019-07-05T06:01:22+00:00')],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo('2019-07-17T14:26:20.203Z')]
   )
 
   t.deepEqual(hallwayTable, testTable)
@@ -45,10 +45,10 @@ test('hallway gander with an added filter for the user works as expected', async
   })
 
   testTable.push(
-    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)],
-    ['ckipp', '@neauoire it\'s good to be here!', timeAgo(`2019-07-04T14:39:13+00:00`)],
-    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
-    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo('2019-07-04T05:04:52+00:00')],
+    ['ckipp', '@neauoire it\'s good to be here!', timeAgo('2019-07-04T14:39:13+00:00')],
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo('2019-07-05T06:01:22+00:00')],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo('2019-07-17T14:26:20.203Z')]
   )
 
   t.deepEqual(hallwayTable, testTable)
@@ -67,8 +67,8 @@ test('hallway gander with an added filter for the channel works as expected', as
   })
 
   testTable.push(
-    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo(`2019-07-05T06:01:22+00:00`)],
-    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo(`2019-07-17T14:26:20.203Z`)]
+    ['ckipp', '/meta Is the top /hallway on the right bar a catchall, and then the bottom /hallway for when someone targets that channel? It\'s sort of confusing that there\'s two.', timeAgo('2019-07-05T06:01:22+00:00')],
+    ['ckipp', '/meta I started and couldn\'t stop. I made a cli app for the webring, including the hallway. I had a ton of fun with this, and still have some improvements to make https://github.com/ckipp01/webring-cli', timeAgo('2019-07-17T14:26:20.203Z')]
   )
 
   t.deepEqual(hallwayTable, testTable)
@@ -87,7 +87,7 @@ test('hallway gander with an added filter on tag works as expected', async t => 
   })
 
   testTable.push(
-    ['ckipp', 'Hello everyone #twtxt.', timeAgo(`2019-07-04T05:04:52+00:00`)]
+    ['ckipp', 'Hello everyone #twtxt.', timeAgo('2019-07-04T05:04:52+00:00')]
   )
 
   t.deepEqual(hallwayTable, testTable)
@@ -101,7 +101,7 @@ test('hallway gander returns correct error when unable to find what you are filt
   }
 })
 
-test(`hallway gander returns correct error when it's unable to parse the feeds correctly`, async t => {
+test('hallway gander returns correct error when it\'s unable to parse the feeds correctly', async t => {
   try {
     await fetchHallway(validSiteInvalidFeedLoc, validConfigLoc, null)
   } catch (err) {

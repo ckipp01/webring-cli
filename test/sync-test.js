@@ -16,7 +16,7 @@ test('Sync works to parse a valid sites.js file and store it', async t => {
   t.is(sitesSucces, 'Synced 6 sites')
 })
 
-test(`Sync displays the correct error if it's unable to parse the sites.js file`, async t => {
+test('Sync displays the correct error if it\'s unable to parse the sites.js file', async t => {
   try {
     await fetchSites(invalidSitesUrl, siteLoc)
   } catch (err) {
