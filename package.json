@@ -16,7 +16,7 @@
   },
   "scripts": {
     "fix": "eslint --fix",
-    "lint": "eslint commands/*.js",
+    "lint": "eslint commands/",
     "test": "ava --verbose"
   },
   "dependencies": {
