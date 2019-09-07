@@ -2,7 +2,7 @@
   "name": "webring-cli",
   "description": "Command line client for the XXIIVV webring",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Chris Kipp",
   "emai": "ckipp@pm.me",
   "repository": {
