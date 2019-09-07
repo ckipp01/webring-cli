@@ -26,18 +26,28 @@ const handleEnclosure = enclosureObject => {
   }
 }
 
+const grabTitle = potentialTitle => {
+  return typeof potentialTitle === 'string'
+    ? potentialTitle
+    : potentialTitle['#text']
+}
+
+const prepareAtomObject = (title, link) => feedItem => {
+  const postTitle = grabTitle(feedItem.title || 'Missing Title')
+  const postDate = formatDate(feedItem.published) || '0000-00-00'
+  const postLink = feedItem.link['_href'] || ''
+  const postContent = feedItem.summary['#text'] || 'Missing Summary'
+  const post = { postTitle, postDate, postLink, postContent }
+  return { title, link, post }
+}
+
 const parseAtomFeed = feed => {
-  const title = feed.feed.title || 'Missing Title'
+  const title = grabTitle(feed.feed.title || 'Missing Title')
   const link = feed.feed.id || ''
   const content = feed.feed.entry
-  return content.map(atomPost => {
-    const postTitle = atomPost.title || 'Missing Title'
-    const postDate = formatDate(atomPost.published) || '0000-00-00'
-    const postLink = atomPost.link['_href'] || ''
-    const postContent = atomPost.summary['#text'] || 'Missing Summary'
-    const post = { postTitle, postDate, postLink, postContent }
-    return { title, link, post }
-  })
+  return Array.isArray(content)
+    ? content.map(prepareAtomObject(title, link))
+    : [prepareAtomObject(title, link)(content)]
 }
 
 const parseRssFeed = feed => {
