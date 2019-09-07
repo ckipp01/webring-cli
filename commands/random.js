@@ -7,7 +7,7 @@ const platform = require('os').platform()
 const { checkIfExistsOrThrow, dim } = require('../utils/general')
 
 const goToRandom = sitesLocation => {
-  checkIfExistsOrThrow(sitesLocation, 'Please run webring sync first')
+  checkIfExistsOrThrow(sitesLocation, 'Please run `webring sync` first')
 
   const rawJson = fs.readFileSync(sitesLocation)
   const siteObjects = JSON.parse(rawJson)

@@ -50,8 +50,8 @@ const fetchFeed = site => {
 
 const fetchHallway = (siteListLoc, configFileLoc, subOption) =>
   new Promise((resolve, reject) => {
-    checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
-    checkIfExistsOrThrow(configFileLoc, 'Please run webring hallway setup first')
+    checkIfExistsOrThrow(siteListLoc, 'Please run `webring sync` first')
+    checkIfExistsOrThrow(configFileLoc, 'Please run `webring hallway setup` first')
 
     const rawJson = fs.readFileSync(siteListLoc)
     const siteObjects = JSON.parse(rawJson)

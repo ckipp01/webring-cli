@@ -93,7 +93,7 @@ const fetchFeed = site => {
 
 const fetchFeedUrls = (feedOrDefaultObject, siteListLoc) =>
   new Promise((resolve, reject) => {
-    checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
+    checkIfExistsOrThrow(siteListLoc, 'Please run `webring sync` first')
 
     const filter = typeof feedOrDefaultObject === 'string'
       ? feedOrDefaultObject

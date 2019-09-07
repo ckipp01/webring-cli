@@ -19,7 +19,7 @@ const groupGroupByTwo = (group, next) => {
 }
 
 const listSites = siteListLoc => {
-  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run `webring sync` first')
 
   const table = new Table({
     style: {
@@ -38,7 +38,7 @@ const listSites = siteListLoc => {
 }
 
 const listRss = siteListLoc => {
-  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run `webring sync` first')
 
   const table = new Table({
     style: {
@@ -58,7 +58,7 @@ const listRss = siteListLoc => {
 }
 
 const listHallwayMembers = siteListLoc => {
-  checkIfExistsOrThrow(siteListLoc, 'Please run webring sync first')
+  checkIfExistsOrThrow(siteListLoc, 'Please run `webring sync` first')
 
   const table = new Table({
     style: {

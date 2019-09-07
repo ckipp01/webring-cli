@@ -25,6 +25,7 @@ const createConfigAndEnterTwtxtLocation = configFileLoc =>
       readline.question(` ${dimBegin} --> `, answer => {
         if (answer.trim() === '') {
           readline.close()
+          fs.writeFileSync(configFileLoc, JSON.stringify(baseConfig))
           resolve('Your current value is blank. If you want to change this later, just run setup again')
         } else {
           const newValue = { hallwayFileLocation: answer.trim() }

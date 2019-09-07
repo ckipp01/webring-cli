@@ -7,8 +7,8 @@ const { checkIfExistsOrThrow, dim } = require('../utils/general')
 
 const writeInHallway = (configFileLoc, siteListLoc, subOption) =>
   new Promise((resolve, reject) => {
-    checkIfExistsOrThrow(configFileLoc, 'You need to run webring hallway setup first before writing on the hallway')
-    checkIfExistsOrThrow(siteListLoc, 'You need to run webring sync before writing in the hallway')
+    checkIfExistsOrThrow(configFileLoc, 'You need to run `webring hallway setup` first before writing on the hallway')
+    checkIfExistsOrThrow(siteListLoc, 'You need to run `webring sync` before writing in the hallway')
     if (typeof subOption !== 'string') {
       reject(new Error('Your message can\'t be empty'))
     } else {
