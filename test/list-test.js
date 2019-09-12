@@ -31,7 +31,7 @@ test('That the right message is displayed if sync hasn\'t been ran yet before yo
   try {
     listSites('fake/site/list/location')
   } catch (err) {
-    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run webring sync first'))
+    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run `webring sync` first'))
   }
 })
 
@@ -64,7 +64,7 @@ test('That the right message is displayed if sync hasn\'t been ran yet before yo
   try {
     listRss('fake/site/list/location')
   } catch (err) {
-    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run webring sync first'))
+    t.deepEqual(err, new Error(' fake/site/list/location does not exist\nPlease run `webring sync` first'))
   }
 })
 

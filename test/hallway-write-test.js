@@ -13,7 +13,7 @@ test('Hallway write tells you to run setup first if there is no config file', as
   try {
     await writeInHallway(nonExistantConfigFileLoc, siteListLoc, 'here is a fake message')
   } catch (err) {
-    t.is(err.message, ` ${nonExistantConfigFileLoc} does not exist\nYou need to run webring hallway setup first before writing on the hallway`)
+    t.is(err.message, ` ${nonExistantConfigFileLoc} does not exist\nYou need to run \`webring hallway setup\` first before writing on the hallway`)
   }
 })
 

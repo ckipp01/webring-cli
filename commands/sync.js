@@ -6,31 +6,25 @@ const fs = require('fs')
 const { checkIfExistsOrThrow, red } = require('../utils/general')
 const indental = require('../utils/indental')
 
-const cleanLine = line => {
-  const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
-  const cleanJSON = dirtyString
-    .replace(/\s/g, '')
-    .replace((/([\w]+)(:')/g), '"$1"$2')
-    .replace(/'/g, '"')
-  return JSON.parse(cleanJSON)
-}
-
 const fetchSites = (webringSitesUrl, siteListLoc) =>
   new Promise((resolve, reject) => {
     fetch(webringSitesUrl, { timeout: 5000 })
       .then(rawResponse => rawResponse.text())
       .then(data => {
-        const begin = data.indexOf('[') + 1
-        const end = data.indexOf(']')
+        const begin = data.indexOf('[')
+        const end = data.indexOf(']') + 1
 
         const siteObjects = data
           .slice(begin, end)
-          .split('\n')
-          .filter(url => url !== '')
-          .map(cleanLine)
+          .replace(/(\r\n|\n|\r)/gm,'')
+          .replace(/\s/g, '')
+          .replace((/([\w]+)(:')/g), '"$1"$2')
+          .replace(/'/g, '"')
 
-        fs.writeFileSync(siteListLoc, JSON.stringify(siteObjects))
-        resolve(`Synced ${Object.keys(siteObjects).length} sites`)
+        const parsedSites = JSON.parse(siteObjects) 
+
+        fs.writeFileSync(siteListLoc, JSON.stringify(parsedSites))
+        resolve(`Synced ${parsedSites.length} sites`)
       })
       .catch(err => {
         reject(new Error(`Unable to fetch and parse sites.js -> ${err.message}`))

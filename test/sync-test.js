@@ -20,7 +20,7 @@ test('Sync displays the correct error if it\'s unable to parse the sites.js file
   try {
     await fetchSites(invalidSitesUrl, siteLoc)
   } catch (err) {
-    t.is(err.message, 'Unable to fetch and parse sites.js -> Unexpected token t in JSON at position 52')
+    t.is(err.message, 'Unable to fetch and parse sites.js -> Unexpected token t in JSON at position 335')
   }
 })
 
