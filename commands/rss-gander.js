@@ -53,7 +53,7 @@ const parseAtomFeed = feed => {
 const parseRssFeed = feed => {
   const title = feed.rss.channel.title || 'Missing Title'
   const link = feed.rss.channel.link || ''
-  const content = feed.rss.channel.item
+  const content = feed.rss.channel.item || []
   return content.map(rssPost => {
     const postTitle = rssPost.title || 'Missing Title'
     const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
