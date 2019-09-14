@@ -50,7 +50,7 @@ const compendium = wikiCacheLoc => {
     if (grouped[0].length > 0) {
       const catTable = new Table()
       catTable.push([{ colSpan: 2, content: currentLocation.length > 0 ? `${yellowBegin}${currentLocation[currentLocation.length - 1]}${end}` : `${yellowBegin}COMPENDIUM${end}` }])
-      grouped[0].forEach((item, index) => catTable.push([index, item]))
+      grouped[0].forEach(item => catTable.push([Object.keys(current).indexOf(item), item]))
       console.log(catTable.toString())
     }
 

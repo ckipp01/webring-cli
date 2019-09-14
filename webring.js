@@ -122,14 +122,14 @@ program
       } else if (options === 'gander') {
         const feedUrls = await fetchFeedUrls(subOption, siteListLoc)
         const feeds = await Promise.all(feedUrls.map(feed => fetchFeed(feed.rss)))
-        const standardized = await feeds.map(feed => {
+        const standardized = feeds.map(feed => {
           return 'feed' in feed
             ? parseAtomFeed(feed)
             : parseRssFeed(feed)
         })
         const flattend = [].concat.apply([], standardized)
         const ordered = orderByDate(flattend)
-        await htmlifyFeed(ordered)
+        htmlifyFeed(ordered)
       }
     } catch (err) {
       console.error(red, err.message)
