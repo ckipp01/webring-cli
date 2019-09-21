@@ -11,14 +11,12 @@ const fetchSites = (webringSitesUrl, siteListLoc) =>
     fetch(webringSitesUrl, { timeout: 5000 })
       .then(rawResponse => rawResponse.text())
       .then(data => {
-        const begin = data.indexOf('[')
-        const end = data.indexOf(']') + 1
 
         const siteObjects = data
-          .slice(begin, end)
+          .slice(data.indexOf('['), data.length)
           .replace(/(\r\n|\n|\r)/gm,'')
           .replace(/\s/g, '')
-          .replace((/([\w]+)(:')/g), '"$1"$2')
+          .replace(/(\s*?{\s*?|\s*?,\s*?)(['"])?([a-zA-Z0-9]+)(['"])?:/g, '$1"$3":')
           .replace(/'/g, '"')
 
         const parsedSites = JSON.parse(siteObjects) 
