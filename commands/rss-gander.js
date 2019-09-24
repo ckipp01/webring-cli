@@ -50,25 +50,29 @@ const parseAtomFeed = feed => {
     : [prepareAtomObject(title, link)(content)]
 }
 
+const prepareRssObject = (title, link) => feedItem => {
+  const postTitle = feedItem.title || 'Missing Title'
+  const postDate = formatDate(feedItem.pubDate) || '0000-00-00'
+  const postLink = feedItem.link || ''
+  let postContent = ''
+  if (feedItem.enclosure) {
+    postContent = handleEnclosure(feedItem.enclosure)
+  } else if (feedItem['content:encoded']) {
+    postContent = feedItem['content-encoded']
+  } else {
+    postContent = feedItem.description
+  }
+  const post = { postTitle, postDate, postLink, postContent }
+  return { title, link, post }
+}
+
 const parseRssFeed = feed => {
   const title = feed.rss.channel.title || 'Missing Title'
   const link = feed.rss.channel.link || ''
   const content = feed.rss.channel.item || []
-  return content.map(rssPost => {
-    const postTitle = rssPost.title || 'Missing Title'
-    const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
-    const postLink = rssPost.link || ''
-    let postContent = ''
-    if (rssPost.enclosure) {
-      postContent = handleEnclosure(rssPost.enclosure)
-    } else if (rssPost['content:encoded']) {
-      postContent = rssPost['content-encoded']
-    } else {
-      postContent = rssPost.description
-    }
-    const post = { postTitle, postDate, postLink, postContent }
-    return { title, link, post }
-  })
+  return Array.isArray(content)
+    ? content.map(prepareRssObject(title, link))
+    : [prepareRssObject(title, link)(content)]
 }
 
 const orderByDate = arr => {
