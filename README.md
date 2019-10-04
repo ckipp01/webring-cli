@@ -67,7 +67,7 @@ During setup your will also have the option to set the amount of messages you'd 
 The final setting can be used to automatically push your twtxt file if you're using a git repo.
 Note this relies on a clean branch to work correctly.
 
-When you mention a user in the hallway, you simply need to @member them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
+When you mention a user in the hallway, you simply need to `@member` them, and it will be replaced with the twtxt compliant `@<user twtxt-location>` format.
 If you're using this also to maintain a twtxt file outside of the webring, then use the regular format, and it will just leave it as is.
 
 ### rss usage
