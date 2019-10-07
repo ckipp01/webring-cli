@@ -58,7 +58,7 @@ const prepareRssObject = (title, link) => feedItem => {
   if (feedItem.enclosure) {
     postContent = handleEnclosure(feedItem.enclosure)
   } else if (feedItem['content:encoded']) {
-    postContent = feedItem['content-encoded']
+    postContent = feedItem['content:encoded']
   } else {
     postContent = feedItem.description
   }
