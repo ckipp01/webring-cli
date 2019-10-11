@@ -36,7 +36,9 @@ const prepareAtomObject = (title, link) => feedItem => {
   const postTitle = grabTitle(feedItem.title || 'Missing Title')
   const postDate = formatDate(feedItem.published) || '0000-00-00'
   const postLink = feedItem.link['_href'] || ''
-  const postContent = feedItem.summary['#text'] || 'Missing Summary'
+  const postContent = 'summary' in feedItem
+    ? feedItem.summary['#text']
+    : 'Missing Summary'
   const post = { postTitle, postDate, postLink, postContent }
   return { title, link, post }
 }
