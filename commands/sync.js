@@ -13,13 +13,13 @@ const fetchSites = (webringSitesUrl, siteListLoc) =>
       .then(data => {
 
         const siteObjects = data
-          .slice(data.indexOf('['), data.length)
+          .slice(data.indexOf('['), data.lastIndexOf(']') + 1)
           .replace(/(\r\n|\n|\r)/gm,'')
           .replace(/\s/g, '')
           .replace(/(\s*?{\s*?|\s*?,\s*?)(['"])?([a-zA-Z0-9]+)(['"])?:/g, '$1"$3":')
           .replace(/'/g, '"')
 
-        const parsedSites = JSON.parse(siteObjects) 
+        const parsedSites = JSON.parse(siteObjects)
 
         fs.writeFileSync(siteListLoc, JSON.stringify(parsedSites))
         resolve(`Synced ${parsedSites.length} sites`)
